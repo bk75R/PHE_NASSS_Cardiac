@@ -1,9 +1,9 @@
 setwd(WebPlotDigitizerDirectory)
 ####################
 
-#########################################################
-# Read WebPlotDigitizer data extracted from NASSS graph #
-#########################################################
+##########################################################
+# Read WebPlotDigitizer data extracted from NASSS graphs #
+##########################################################
 
 #############
 # 2020 data #
@@ -129,9 +129,9 @@ cardiac.2022.long <- cardiac.2022 %>%
 cardiac.calls <- rbind.data.frame(cardiac.2020.long,cardiac.2021.long,cardiac.2022.long)
 
 # Remove redundant data frames
-# rm(cardiac.2020,cardiac.2020.7DA,cardiac.2020.baseline,cardiac.2020.long,
-#    cardiac.2021,cardiac.2021.7DA,cardiac.2021.baseline,cardiac.2021.long,
-#    cardiac.2022,cardiac.2022.7DA,cardiac.2022.baseline,cardiac.2022.long)
+rm(cardiac.2020,cardiac.2020.7DA,cardiac.2020.baseline,cardiac.2020.long,
+   cardiac.2021,cardiac.2021.7DA,cardiac.2021.baseline,cardiac.2021.long,
+   cardiac.2022,cardiac.2022.7DA,cardiac.2022.baseline,cardiac.2022.long)
 
 ####################
 setwd(RootDirectory)
