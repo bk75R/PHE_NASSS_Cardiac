@@ -14,10 +14,9 @@ library(ggplot2)
 library(ggthemes) # theme_tufte()
 library(tidyr)
 library(dplyr)
-library(httr)
 library(scales)
 library(lubridate)
-library(readxl)
+library(zoo)
 
 ###################################################
 #                                                 #
@@ -35,7 +34,7 @@ GraphFileNameRoot <- as.character(format(Sys.Date(),"%Y-%m-%d"))
 
 source("PHS_NASSS_Cardiac_WebPlotDigitizerLoad.R") # Load data extracted from graph using WebPlotDigitizer - https://apps.automeris.io/wpd/
 
-source("PHS_NASSS_Cardiac_WebPlotDigitizerGraph.R") # Graph data from WebPlotDigitizer
+source("PHS_NASSS_Cardiac_WebPlotDigitizerGraphs.R") # Graph data from WebPlotDigitizer
 
 ##########################################################################################
 setwd(RootDirectory)
