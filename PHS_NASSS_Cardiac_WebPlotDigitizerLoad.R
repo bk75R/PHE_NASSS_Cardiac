@@ -1,40 +1,119 @@
 setwd(WebPlotDigitizerDirectory)
 ####################
 
-#######################################################
-# Read WebPlotDigitizer data extracted from PHS graph #
-#######################################################
+#########################################################
+# Read WebPlotDigitizer data extracted from NASSS graph #
+#########################################################
 
-WebPlotDigitizerData_AllCause_Filename <- "AllCause.csv"
-WebPlotDigitizerData_COVID_Filename <- "COVID.csv"
+#############
+# 2020 data #
+#############
 
-AcuteAllCauseAdmissionsDaily <- read.csv(WebPlotDigitizerData_AllCause_Filename,header = FALSE, sep = ",")
-COVIDAdmissionsDaily <- read.csv(WebPlotDigitizerData_COVID_Filename,header = FALSE, sep = ",")
-# COVIDAdmissionsDaily is messy - lots of duplicated dates.
-# However, this isn't an issue for a simple graph of daily admissions as the extra data points
-# don't change the general shape of the graph.
-# These would become an issue if we calculated weekly admissions based on these data.
+# Load data
+WPD.2020.7DA.filename <- "2020 Ambulance bulletin - cardiac - 7 day average.csv"
+WPD.2020.baseline.filename <- "2020 Ambulance bulletin - cardiac - baseline.csv"
+cardiac.2020.7DA <- read.csv(WPD.2020.7DA.filename,header = FALSE, sep = ",")
+cardiac.2020.baseline <- read.csv(WPD.2020.baseline.filename,header = FALSE, sep = ",")
 
-colnames(AcuteAllCauseAdmissionsDaily) <- c("Date","AllCauseAdmissionsDaily")
-colnames(COVIDAdmissionsDaily) <- c("Date","COVIDAdmissionsDaily")
+# Change column names
+column.names <- c("Date","Calls")
+colnames(cardiac.2020.7DA) <- column.names
+colnames(cardiac.2020.baseline) <- column.names
 
 # Convert date formats
-AcuteAllCauseAdmissionsDaily$Date <- as_date(AcuteAllCauseAdmissionsDaily$Date)
-COVIDAdmissionsDaily$Date <- as_date(COVIDAdmissionsDaily$Date)
+cardiac.2020.7DA$Date <- as_date(cardiac.2020.7DA$Date)
+cardiac.2020.baseline$Date <- as_date(cardiac.2020.baseline$Date)
 
 # Remove duplicates
-AcuteAllCauseAdmissionsDaily <- AcuteAllCauseAdmissionsDaily[!duplicated(AcuteAllCauseAdmissionsDaily$Date), ]
-COVIDAdmissionsDaily <- COVIDAdmissionsDaily[!duplicated(COVIDAdmissionsDaily$Date), ]
+cardiac.2020.7DA <- cardiac.2020.7DA[!duplicated(cardiac.2020.7DA$Date), ]
+cardiac.2020.baseline <- cardiac.2020.baseline[!duplicated(cardiac.2020.baseline$Date), ]
+
+cardiac.2020 <- right_join(cardiac.2020.7DA,cardiac.2020.baseline,by = "Date")
+colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
+colnames(cardiac.2020) <- colnames.cardiac
+cardiac.2020 <- drop_na(cardiac.2020) # Removes rows where there's only one value available.
+# This is due to the overlapping lines in the original plots.
 
 # Pivot the datasets to make them longer
-AcuteAllCauseAdmissionsDaily_long <- AcuteAllCauseAdmissionsDaily %>%
-  pivot_longer(AllCauseAdmissionsDaily,names_to = "Type",values_to = "Admissions")
+cardiac.2020.long <- cardiac.2020 %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
 
-COVIDAdmissionsDaily_long <- COVIDAdmissionsDaily %>%
-  pivot_longer(COVIDAdmissionsDaily,names_to = "Type",values_to = "Admissions")
+#############
+# 2021 data #
+#############
 
-# Use rbind.data.frame() to combine datasets while retaining messiness.
-AdmissionsDaily <- rbind.data.frame(AcuteAllCauseAdmissionsDaily_long,COVIDAdmissionsDaily_long)
+# Load data
+WPD.2021.7DA.filename <- "2021 Ambulance bulletin - cardiac - 7 day average.csv"
+WPD.2021.baseline.filename <- "2021 Ambulance bulletin - cardiac - baseline.csv"
+cardiac.2021.7DA <- read.csv(WPD.2021.7DA.filename,header = FALSE, sep = ",")
+cardiac.2021.baseline <- read.csv(WPD.2021.baseline.filename,header = FALSE, sep = ",")
+
+# Change column names
+column.names <- c("Date","Calls")
+colnames(cardiac.2021.7DA) <- column.names
+colnames(cardiac.2021.baseline) <- column.names
+
+# Convert date formats
+cardiac.2021.7DA$Date <- as_date(cardiac.2021.7DA$Date)
+cardiac.2021.baseline$Date <- as_date(cardiac.2021.baseline$Date)
+
+# Remove duplicates
+cardiac.2021.7DA <- cardiac.2021.7DA[!duplicated(cardiac.2021.7DA$Date), ]
+cardiac.2021.baseline <- cardiac.2021.baseline[!duplicated(cardiac.2021.baseline$Date), ]
+
+cardiac.2021 <- right_join(cardiac.2021.7DA,cardiac.2021.baseline,by = "Date")
+colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
+colnames(cardiac.2021) <- colnames.cardiac
+cardiac.2021 <- drop_na(cardiac.2021) # Removes rows where there's only one value available.
+# This is due to the overlapping lines in the original plots.
+
+# Pivot the datasets to make them longer
+cardiac.2021.long <- cardiac.2021 %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
+
+#############
+# 2022 data #
+#############
+
+# Load data
+WPD.2022.7DA.filename <- "2022 Ambulance bulletin - cardiac - 7 day average.csv"
+WPD.2022.baseline.filename <- "2022 Ambulance bulletin - cardiac - baseline.csv"
+cardiac.2022.7DA <- read.csv(WPD.2022.7DA.filename,header = FALSE, sep = ",")
+cardiac.2022.baseline <- read.csv(WPD.2022.baseline.filename,header = FALSE, sep = ",")
+
+# Change column names
+column.names <- c("Date","Calls")
+colnames(cardiac.2022.7DA) <- column.names
+colnames(cardiac.2022.baseline) <- column.names
+
+# Convert date formats
+cardiac.2022.7DA$Date <- as_date(cardiac.2022.7DA$Date)
+cardiac.2022.baseline$Date <- as_date(cardiac.2022.baseline$Date)
+
+# Remove duplicates
+cardiac.2022.7DA <- cardiac.2022.7DA[!duplicated(cardiac.2022.7DA$Date), ]
+cardiac.2022.baseline <- cardiac.2022.baseline[!duplicated(cardiac.2022.baseline$Date), ]
+
+cardiac.2022 <- right_join(cardiac.2022.7DA,cardiac.2022.baseline,by = "Date")
+colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
+colnames(cardiac.2022) <- colnames.cardiac
+cardiac.2022 <- drop_na(cardiac.2022) # Removes rows where there's only one value available.
+# This is due to the overlapping lines in the original plots.
+
+# Pivot the datasets to make them longer
+cardiac.2022.long <- cardiac.2022 %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
+
+#####################
+# Combine datasets  #
+#####################
+
+cardiac.calls <- rbind.data.frame(cardiac.2020.long,cardiac.2021.long,cardiac.2022.long)
+
+# Remove redundant data frames
+rm(cardiac.2020,cardiac.2020.7DA,cardiac.2020.baseline,cardiac.2020.long,
+   cardiac.2021,cardiac.2021.7DA,cardiac.2021.baseline,cardiac.2021.long,
+   cardiac.2022,cardiac.2022.7DA,cardiac.2022.baseline,cardiac.2022.long)
 
 ####################
 setwd(RootDirectory)
