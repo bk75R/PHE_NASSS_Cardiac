@@ -14,5 +14,7 @@ The copied graphs were uploaded into WebPlotDigitizer (https://automeris.io/WebP
 Data was saved as .csv files then tidied in R (https://cran.r-project.org/) to remove duplicates and combine the datasets.
 Simple graphs were made using ggplot2 (https://ggplot2.tidyverse.org).
 
+![2022-02-05 NASSS Cardiac Calls (reduced y range)](https://user-images.githubusercontent.com/82215025/152640137-6eef34f4-0131-4573-b7ed-9829a6fd307f.png)
+
 ## Licence
 The data shared here is available under the Open Government Licence (https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
