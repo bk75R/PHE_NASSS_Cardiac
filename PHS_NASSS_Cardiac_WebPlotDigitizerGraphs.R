@@ -51,16 +51,7 @@ cardiac.calls.graph.basic <- ggplot(data = cardiac.calls,
   scale_y_continuous(name = "Calls",
                      labels = label_comma(accuracy = 1),
                      limits = c(0,500),
-                     expand = c(0.06,0))+
-  geom_line(show.legend = TRUE,
-            size = 0.65,
-            na.rm = TRUE)+
-  scale_linetype_manual(name = "Call type",
-                      values = cardiac.linetypes,
-                      labels = cardiac.labels)+
-  scale_colour_manual(name = "Call type",
-                        values = cardiac.colours,
-                        labels = cardiac.labels)
+                     expand = c(0.06,0))
 
 cardiac.calls.graph.original <- cardiac.calls.graph.basic + 
   geom_vline(data = vlines.cardiac.calls,
@@ -75,7 +66,16 @@ cardiac.calls.graph.original <- cardiac.calls.graph.basic +
             nudge_y = 5,
             colour="grey25",
             angle = 90,
-            show.legend = FALSE)
+            show.legend = FALSE)+
+  geom_line(show.legend = TRUE,
+            size = 0.65,
+            na.rm = TRUE)+
+  scale_linetype_manual(name = "Call type",
+                        values = cardiac.linetypes,
+                        labels = cardiac.labels)+
+  scale_colour_manual(name = "Call type",
+                      values = cardiac.colours,
+                      labels = cardiac.labels)
 
 ggsave(cardiac.calls.graph.original,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (original y range).png",sep=""),
        device = png,
@@ -108,7 +108,16 @@ cardiac.calls.graph.closer <- cardiac.calls.graph.basic +
             nudge_y = 5,
             colour="grey25",
             angle = 90,
-            show.legend = FALSE)
+            show.legend = FALSE)+
+  geom_line(show.legend = TRUE,
+            size = 0.65,
+            na.rm = TRUE)+
+  scale_linetype_manual(name = "Call type",
+                        values = cardiac.linetypes,
+                        labels = cardiac.labels)+
+  scale_colour_manual(name = "Call type",
+                      values = cardiac.colours,
+                      labels = cardiac.labels)
   
 ggsave(cardiac.calls.graph.closer,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (reduced y range).png",sep=""),
        device = png,
