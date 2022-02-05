@@ -5,7 +5,7 @@ setwd(GraphsDirectory)
 # Graph WebPlotDigitizer data extracted from NASSS graphs #
 ###########################################################
 
-GraphSubtitle <- "@bouncingkitten\nhttps://www.drowningindata.blog"
+GraphSubtitle <- "Graph by @bouncingkitten | https://www.drowningindata.blog"
 
 # Custom date formatting to get JFMAMJ... labels
 # http://www.jasonfabris.com/blog/dteformat/
