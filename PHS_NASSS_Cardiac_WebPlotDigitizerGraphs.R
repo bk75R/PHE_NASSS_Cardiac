@@ -35,7 +35,7 @@ cardiac.calls.graph.basic <- ggplot(data = cardiac.calls,
                                   colour = Type,
                                   linetype = Type)
                               )+
-  ggtitle("Cardiac calls from the National Ambulance Syndromic Surveillance System: England ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
           subtitle = GraphSubtitle)+
   labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
