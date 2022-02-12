@@ -122,11 +122,37 @@ cardiac.2022 <- rbind.data.frame(cardiac.2022.rest,cardiac.2022.end)
 cardiac.2022.long <- cardiac.2022 %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
 
+
+###########################################################################
+# Interpolate (approx, linear) between baseline and 7 day average points. #
+# This will yield modelled daily data for each data type.                 #
+###########################################################################
+
+cardiac.2020_2022 <- rbind.data.frame(cardiac.2020,cardiac.2021,cardiac.2022)
+date.range <- seq(min(cardiac.2020_2022$Date),max(cardiac.2020_2022$Date),1)
+day.seq.full <- seq(1,length(date.range),1)
+day.seq.data <- seq(1,nrow(cardiac.2020_2022),1)
+cardiac.2020_2022.baseline.approx <- approx(cardiac.2020_2022$Date,
+                                            cardiac.2020_2022$Baseline,
+                                            method = "linear",
+                                            n = length(day.seq.full))
+cardiac.2020_2022.sevendayaverage.approx <- approx(cardiac.2020_2022$Date,
+                                                   cardiac.2020_2022$SevenDayAverage,
+                                                   method = "linear",
+                                                   n = length(day.seq.full))
+
+cardiac.2020_2022.approx <- cbind.data.frame(date.range,
+                                             cardiac.2020_2022.sevendayaverage.approx$y,
+                                             cardiac.2020_2022.baseline.approx$y)
+colnames(cardiac.2020_2022.approx) <- colnames(cardiac.2020_2022)
+
 #####################
 # Combine datasets  #
 #####################
 
-cardiac.calls <- rbind.data.frame(cardiac.2020.long,cardiac.2021.long,cardiac.2022.long)
+# cardiac.calls <- rbind.data.frame(cardiac.2020.long,cardiac.2021.long,cardiac.2022.long) # Non-interpolated data
+cardiac.calls <- cardiac.2020_2022.approx %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
 
 ####################
 setwd(RootDirectory)
