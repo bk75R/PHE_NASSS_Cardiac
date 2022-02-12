@@ -128,23 +128,35 @@ cardiac.2022.long <- cardiac.2022 %>%
 # This will yield modelled daily data for each data type.                 #
 ###########################################################################
 
+# Baseline data has different date range to seven day average data.
+
+# Calculate baseline approximation
 cardiac.2020_2022 <- rbind.data.frame(cardiac.2020,cardiac.2021,cardiac.2022)
-date.range <- seq(min(cardiac.2020_2022$Date),max(cardiac.2020_2022$Date),1)
-day.seq.full <- seq(1,length(date.range),1)
-day.seq.data <- seq(1,nrow(cardiac.2020_2022),1)
+date.range.baseline <- seq(min(cardiac.2020_2022$Date),max(cardiac.2020_2022$Date),1)
+#day.seq.baseline.full <- seq(1,length(date.range.baseline),1)
 cardiac.2020_2022.baseline.approx <- approx(cardiac.2020_2022$Date,
                                             cardiac.2020_2022$Baseline,
                                             method = "linear",
-                                            n = length(day.seq.full))
-cardiac.2020_2022.sevendayaverage.approx <- approx(cardiac.2020_2022$Date,
-                                                   cardiac.2020_2022$SevenDayAverage,
-                                                   method = "linear",
-                                                   n = length(day.seq.full))
+                                            n = length(date.range.baseline))
+cardiac.2020_2022.baseline.approx <- cbind.data.frame(date.range.baseline,cardiac.2020_2022.baseline.approx$y)
+colnames(cardiac.2020_2022.baseline.approx) <- c("Date","Baseline")
 
-cardiac.2020_2022.approx <- cbind.data.frame(date.range,
-                                             cardiac.2020_2022.sevendayaverage.approx$y,
-                                             cardiac.2020_2022.baseline.approx$y)
-colnames(cardiac.2020_2022.approx) <- colnames(cardiac.2020_2022)
+# Calculate seven day average approximation (different date range)
+cardiac.2020_2022.sevendayaverage <- cbind.data.frame(cardiac.2020_2022$Date,
+                                                      cardiac.2020_2022$SevenDayAverage)
+colnames(cardiac.2020_2022.sevendayaverage) <- c("Date","SevenDayAverage")
+cardiac.2020_2022.sevendayaverage <- cardiac.2020_2022.sevendayaverage %>%
+  filter(!is.na(SevenDayAverage)) # Remove rows with NA values.
+date.range.sevendayaverage <- seq(min(cardiac.2020_2022.sevendayaverage$Date),max(cardiac.2020_2022.sevendayaverage$Date),1)
+cardiac.2020_2022.sevendayaverage.approx <- approx(cardiac.2020_2022.sevendayaverage$Date,
+                                                   cardiac.2020_2022.sevendayaverage$SevenDayAverage,
+                                                   method = "linear",
+                                                   n = length(date.range.sevendayaverage))
+cardiac.2020_2022.sevendayaverage.approx <- cbind.data.frame(date.range.sevendayaverage,cardiac.2020_2022.sevendayaverage.approx$y)
+colnames(cardiac.2020_2022.sevendayaverage.approx) <- c("Date","SevenDayAverage")
+
+
+cardiac.2020_2022.approx <- full_join(cardiac.2020_2022.baseline.approx,cardiac.2020_2022.sevendayaverage.approx)
 
 #####################
 # Combine datasets  #
