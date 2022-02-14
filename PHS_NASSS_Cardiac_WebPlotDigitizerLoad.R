@@ -31,7 +31,7 @@ cardiac.2019.baseline <- cardiac.2019.baseline[!duplicated(cardiac.2019.baseline
 cardiac.2019 <- right_join(cardiac.2019.7DA,cardiac.2019.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2019) <- colnames.cardiac
-cardiac.2019 <- drop_na(cardiac.2019) # Removes rows where there's only one value available.
+# cardiac.2019 <- drop_na(cardiac.2019) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
 # Keep only January 2019 data
@@ -71,9 +71,6 @@ colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2020) <- colnames.cardiac
 cardiac.2020 <- drop_na(cardiac.2020) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
-
-# Keep only 2019 data
-cardiac.2020 <- filter(cardiac.2020,Date <= as.Date("2020-01-01"))
 
 # Pivot the datasets to make them longer
 cardiac.2020.long <- cardiac.2020 %>%
@@ -166,12 +163,18 @@ cardiac.2022.long <- cardiac.2022 %>%
 # This will yield modelled daily data for each data type.                 #
 ###########################################################################
 
+# Keep only early 2020 data from 2019 report
+#cardiac.2019 <- filter(cardiac.2019,Date >= min(cardiac.2020$Date))
+
 # Baseline data has different date range to seven day average data.
 
 # Calculate baseline approximation
 cardiac.2019_2022 <- rbind.data.frame(cardiac.2019,cardiac.2020,cardiac.2021,cardiac.2022)
-#date.range.baseline <- seq(as.Date("2019-01-01"),max(cardiac.2019_2022$Date),1) # Start sequence at 01/01/2019 because cardiac.2019 starts at 02/01/2019.
-date.range.baseline <- seq(min(cardiac.2019_2022$Date),max(cardiac.2019_2022$Date),1)
+# Remove duplicates
+cardiac.2019_2022 <- cardiac.2019_2022[!duplicated(cardiac.2019_2022$Date), ]
+
+date.range.baseline <- seq(as.Date("2019-01-01"),max(cardiac.2019_2022$Date),1) # Start sequence at 01/01/2019 because cardiac.2019 starts at 02/01/2019.
+# date.range.baseline <- seq(min(cardiac.2019_2022$Date),max(cardiac.2019_2022$Date),1)
 #day.seq.baseline.full <- seq(1,length(date.range.baseline),1)
 cardiac.2019_2022.baseline.approx <- approx(cardiac.2019_2022$Date,
                                             cardiac.2019_2022$Baseline,
