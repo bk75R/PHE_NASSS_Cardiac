@@ -40,7 +40,8 @@ colnames(cardiac.2019) <- colnames.cardiac
 # Pivot the datasets to make them longer
 cardiac.2019.long <- cardiac.2019 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2019")
 
 
 #############
@@ -75,7 +76,8 @@ cardiac.2020 <- drop_na(cardiac.2020) # Removes rows where there's only one valu
 # Pivot the datasets to make them longer
 cardiac.2020.long <- cardiac.2020 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2020")
 
 #############
 # 2021 data #
@@ -112,7 +114,8 @@ cardiac.2021 <- filter(cardiac.2021,Date <= as.Date("2021-01-01"))
 # Pivot the datasets to make them longer
 cardiac.2021.long <- cardiac.2021 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2021")
 
 #############
 # 2022 data #
@@ -155,7 +158,8 @@ cardiac.2022 <- rbind.data.frame(cardiac.2022.rest,cardiac.2022.end)
 
 # Pivot the datasets to make them longer
 cardiac.2022.long <- cardiac.2022 %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2022")
 
 
 ###########################################################################
@@ -207,6 +211,11 @@ cardiac.2019_2022.approx <- full_join(cardiac.2019_2022.baseline.approx,cardiac.
 # cardiac.calls <- rbind.data.frame(cardiac.2019.long,cardiac.2021.long,cardiac.2022.long) # Non-interpolated data
 cardiac.calls <- cardiac.2019_2022.approx %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls")
+
+cardiac.calls.report.graphs <- rbind.data.frame(cardiac.2019.long,
+                                                cardiac.2020.long,
+                                                cardiac.2021.long,
+                                                cardiac.2022.long)
 
 ####################
 setwd(RootDirectory)
