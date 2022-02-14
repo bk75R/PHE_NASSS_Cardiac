@@ -128,9 +128,10 @@ ggsave(cardiac.calls.graph.closer,filename = paste(GraphFileNameRoot," NASSS Car
 )
 
 
+######################################################################################
+# Graph WebPlotDigitizer data extracted from NASSS graphs for each report separately #
+######################################################################################
 
-
-# Graph cardiac calls (all years)
 cardiac.calls.report.graphs.separate <- ggplot(data = cardiac.calls.report.graphs,
                                                aes(x = Date,
                                                    y = Calls,
@@ -155,6 +156,19 @@ cardiac.calls.report.graphs.separate <- ggplot(data = cardiac.calls.report.graph
                      labels = label_comma(accuracy = 1),
                      limits = c(0,500),
                      expand = c(0.06,0))+
+  geom_vline(data = vlines.cardiac.calls,
+             aes(xintercept = Date),
+             colour = "grey75",
+             show.legend = FALSE)+
+  geom_text(data = vlines.cardiac.calls,
+            aes(label = Year,
+                x = Date,
+                y = Calls),
+            nudge_x = 15,
+            nudge_y = 75,
+            colour="grey25",
+            angle = 90,
+            show.legend = FALSE)+
   geom_line(show.legend = TRUE,
             size = 0.65,
             na.rm = TRUE)+

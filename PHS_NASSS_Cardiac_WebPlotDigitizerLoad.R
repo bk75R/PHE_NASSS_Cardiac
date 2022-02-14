@@ -35,7 +35,7 @@ colnames(cardiac.2019) <- colnames.cardiac
 # This is due to the overlapping lines in the original plots.
 
 # Keep only January 2019 data
-#cardiac.2019 <- filter(cardiac.2019,Date >= as.Date("2019-01-01") & Date <= as.Date("2019-01-31"))
+cardiac.2019 <- filter(cardiac.2019,Date >= as.Date("2019-01-01") & Date <= as.Date("2019-01-25")) # Min date of 2020 report is 26/01/19.
 
 # Pivot the datasets to make them longer
 cardiac.2019.long <- cardiac.2019 %>%
