@@ -127,5 +127,55 @@ ggsave(cardiac.calls.graph.closer,filename = paste(GraphFileNameRoot," NASSS Car
        bg = "white"
 )
 
+
+
+
+# Graph cardiac calls (all years)
+cardiac.calls.report.graphs.separate <- ggplot(data = cardiac.calls.report.graphs,
+                                               aes(x = Date,
+                                                   y = Calls,
+                                                   colour = Type,
+                                                   linetype = Type,
+                                                   group = Type)
+                                               )+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="bottom")+
+  scale_x_date(name = "Date",
+               breaks = "1 month",
+               labels = dte_formatter,
+               expand = c(0.03,0.03))+
+  scale_y_continuous(name = "Calls",
+                     labels = label_comma(accuracy = 1),
+                     limits = c(0,500),
+                     expand = c(0.06,0))+
+  geom_line(show.legend = TRUE,
+            size = 0.65,
+            na.rm = TRUE)+
+  scale_linetype_manual(name = "Call type",
+                        values = cardiac.linetypes,
+                        labels = cardiac.labels)+
+  scale_colour_manual(name = "Call type",
+                      values = cardiac.colours,
+                      labels = cardiac.labels)+
+  facet_grid(rows = vars(Report),scales = "free_y")
+
+  
+ggsave(cardiac.calls.report.graphs.separate,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (separates).png",sep=""),
+         device = png,
+         units = "px",
+         width = 2300,
+         height = 1600,
+         bg = "white"
+       )
+  
+
+
 ####################
 setwd(RootDirectory)
