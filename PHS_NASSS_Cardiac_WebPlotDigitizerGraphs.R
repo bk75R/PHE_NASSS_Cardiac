@@ -156,16 +156,16 @@ cardiac.calls.report.graphs.separate <- ggplot(data = cardiac.calls.report.graph
                      labels = label_comma(accuracy = 1),
                      limits = c(0,500),
                      expand = c(0.06,0))+
-  geom_vline(data = vlines.cardiac.calls,
+  geom_vline(data = vlines.cardiac.calls.high,
              aes(xintercept = Date),
              colour = "grey75",
              show.legend = FALSE)+
-  geom_text(data = vlines.cardiac.calls,
+  geom_text(data = vlines.cardiac.calls.high,
             aes(label = Year,
                 x = Date,
                 y = Calls),
             nudge_x = 15,
-            nudge_y = 75,
+            nudge_y = 5,
             colour="grey25",
             angle = 90,
             show.legend = FALSE)+
@@ -189,7 +189,127 @@ ggsave(cardiac.calls.report.graphs.separate,filename = paste(GraphFileNameRoot,"
          bg = "white"
        )
   
+################################################################################################
+# Graph WebPlotDigitizer data extracted from NASSS graphs for each report in different colours #
+################################################################################################
 
+cardiac.calls.report.graphs.separate.colours <- ggplot(data = cardiac.calls.report.graphs,
+                                               aes(x = Date,
+                                                   y = Calls,
+                                                   colour = Report,
+                                                   linetype = Type)
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="bottom")+
+  scale_x_date(name = "Date",
+               breaks = "1 month",
+               labels = dte_formatter,
+               expand = c(0.03,0.03))+
+  scale_y_continuous(name = "Calls",
+                     labels = label_comma(accuracy = 1),
+                     #limits = c(0,500),
+                     expand = c(0.06,0))+
+  geom_vline(data = vlines.cardiac.calls.high,
+             aes(xintercept = Date),
+             colour = "grey75",
+             show.legend = FALSE)+
+  geom_text(data = vlines.cardiac.calls.high,
+            aes(label = Year,
+                x = Date,
+                y = Calls),
+            nudge_x = 15,
+            nudge_y = 20,
+            colour="grey25",
+            angle = 90,
+            show.legend = FALSE)+
+  geom_line(show.legend = TRUE,
+            size = 0.65,
+            na.rm = TRUE)+
+  scale_linetype_manual(name = "Call type",
+                        values = cardiac.linetypes,
+                        labels = cardiac.labels)#+
+  # scale_colour_manual(name = "Call type",
+  #                     values = cardiac.colours,
+  #                     labels = cardiac.labels)
+
+
+ggsave(cardiac.calls.report.graphs.separate.colours,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (separate colours).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
+
+################################################################################################
+# Graph WebPlotDigitizer data extracted from NASSS graphs for each report with coloured points #
+################################################################################################
+
+cardiac.calls.report.graphs.points <- ggplot(data = cardiac.calls.report.graphs,
+                                                       aes(x = Date,
+                                                           y = Calls,
+                                                           colour = Report,
+                                                           shape = Type)
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="bottom")+
+  scale_x_date(name = "Date",
+               breaks = "1 month",
+               labels = dte_formatter,
+               expand = c(0.03,0.03))+
+  scale_y_continuous(name = "Calls",
+                     labels = label_comma(accuracy = 1),
+                     #limits = c(0,500),
+                     expand = c(0.06,0))+
+  geom_vline(data = vlines.cardiac.calls.high,
+             aes(xintercept = Date),
+             colour = "grey75",
+             show.legend = FALSE)+
+  geom_text(data = vlines.cardiac.calls.high,
+            aes(label = Year,
+                x = Date,
+                y = Calls),
+            nudge_x = 15,
+            nudge_y = 20,
+            colour="grey25",
+            angle = 90,
+            show.legend = FALSE)+
+  geom_line(show.legend = TRUE,
+            size = 0.15,
+            alpha = 0.5,
+            na.rm = TRUE)+
+  geom_point(show.legend = TRUE,
+                       size = 0.65,
+                       na.rm = TRUE)#+
+  # scale_linetype_manual(name = "Call type",
+  #                       values = cardiac.linetypes,
+  #                       labels = cardiac.labels)#+
+# scale_colour_manual(name = "Call type",
+#                     values = cardiac.colours,
+#                     labels = cardiac.labels)
+
+
+ggsave(cardiac.calls.report.graphs.points,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (points).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
 
 ####################
 setwd(RootDirectory)
