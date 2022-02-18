@@ -79,6 +79,41 @@ cardiac.2020.long <- cardiac.2020 %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2020")
 
+#####################
+# 2020 week 10 data #
+#####################
+
+# Load data
+WPD.2020wk10.7DA.filename <- "2020 week 10 Ambulance bulletin - cardiac - 7 day average.csv"
+WPD.2020wk10.baseline.filename <- "2020 week 10 Ambulance bulletin - cardiac - baseline.csv"
+cardiac.2020wk10.7DA <- read.csv(WPD.2020wk10.7DA.filename,header = FALSE, sep = ",")
+cardiac.2020wk10.baseline <- read.csv(WPD.2020wk10.baseline.filename,header = FALSE, sep = ",")
+
+# Change column names
+column.names <- c("Date","Calls")
+colnames(cardiac.2020wk10.7DA) <- column.names
+colnames(cardiac.2020wk10.baseline) <- column.names
+
+# Convert date formats
+cardiac.2020wk10.7DA$Date <- as_date(cardiac.2020wk10.7DA$Date)
+cardiac.2020wk10.baseline$Date <- as_date(cardiac.2020wk10.baseline$Date)
+
+# Remove duplicates
+cardiac.2020wk10.7DA <- cardiac.2020wk10.7DA[!duplicated(cardiac.2020wk10.7DA$Date), ]
+cardiac.2020wk10.baseline <- cardiac.2020wk10.baseline[!duplicated(cardiac.2020wk10.baseline$Date), ]
+
+cardiac.2020wk10 <- right_join(cardiac.2020wk10.7DA,cardiac.2020wk10.baseline,by = "Date")
+colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
+colnames(cardiac.2020wk10) <- colnames.cardiac
+cardiac.2020wk10 <- drop_na(cardiac.2020wk10) # Removes rows where there's only one value available.
+# This is due to the overlapping lines in the original plots.
+
+# Pivot the datasets to make them longer
+cardiac.2020wk10.long <- cardiac.2020wk10 %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2020wk10")
+
 #############
 # 2021 data #
 #############
@@ -116,6 +151,45 @@ cardiac.2021.long <- cardiac.2021 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2021")
+
+#####################
+# 2021 week 08 data #
+#####################
+
+# Load data
+WPD.2021wk08.7DA.filename <- "2021 week 08 Ambulance bulletin - cardiac - 7 day average.csv"
+WPD.2021wk08.baseline.filename <- "2021 week 08 Ambulance bulletin - cardiac - baseline.csv"
+cardiac.2021wk08.7DA <- read.csv(WPD.2021wk08.7DA.filename,header = FALSE, sep = ",")
+cardiac.2021wk08.baseline <- read.csv(WPD.2021wk08.baseline.filename,header = FALSE, sep = ",")
+
+# Change column names
+column.names <- c("Date","Calls")
+colnames(cardiac.2021wk08.7DA) <- column.names
+colnames(cardiac.2021wk08.baseline) <- column.names
+
+# Convert date formats
+cardiac.2021wk08.7DA$Date <- as_date(cardiac.2021wk08.7DA$Date)
+cardiac.2021wk08.baseline$Date <- as_date(cardiac.2021wk08.baseline$Date)
+
+# Remove duplicates
+cardiac.2021wk08.7DA <- cardiac.2021wk08.7DA[!duplicated(cardiac.2021wk08.7DA$Date), ]
+cardiac.2021wk08.baseline <- cardiac.2021wk08.baseline[!duplicated(cardiac.2021wk08.baseline$Date), ]
+
+cardiac.2021wk08 <- right_join(cardiac.2021wk08.7DA,cardiac.2021wk08.baseline,by = "Date")
+colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
+colnames(cardiac.2021wk08) <- colnames.cardiac
+cardiac.2021wk08 <- drop_na(cardiac.2021wk08) # Removes rows where there's only one value available.
+# This is due to the overlapping lines in the original plots.
+
+# Keep only 2020 data
+cardiac.2021wk08 <- filter(cardiac.2021wk08,Date <= as.Date("2021-01-01"))
+
+# Pivot the datasets to make them longer
+cardiac.2021wk08.long <- cardiac.2021wk08 %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2021wk08")
+
 
 #############
 # 2022 data #
@@ -173,7 +247,7 @@ cardiac.2022.long <- cardiac.2022 %>%
 # Baseline data has different date range to seven day average data.
 
 # Calculate baseline approximation
-cardiac.2019_2022 <- rbind.data.frame(cardiac.2019,cardiac.2020,cardiac.2021,cardiac.2022)
+cardiac.2019_2022 <- rbind.data.frame(cardiac.2019,cardiac.2020,cardiac.2020wk10,cardiac.2021,cardiac.2021wk08,cardiac.2022)
 # Remove duplicates
 cardiac.2019_2022 <- cardiac.2019_2022[!duplicated(cardiac.2019_2022$Date), ]
 
@@ -214,7 +288,9 @@ cardiac.calls <- cardiac.2019_2022.approx %>%
 
 cardiac.calls.report.graphs <- rbind.data.frame(cardiac.2019.long,
                                                 cardiac.2020.long,
+                                                cardiac.2020wk10.long,
                                                 cardiac.2021.long,
+                                                cardiac.2021wk08.long,
                                                 cardiac.2022.long)
 
 ####################
