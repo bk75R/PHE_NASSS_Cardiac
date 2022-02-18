@@ -1,14 +1,18 @@
 # PHE_NASSS_Cardiac
 Extracting and tidying up data from graphs in the National Ambulance Syndromic Surveillance System (England)
 
-I extracted Cardiac/Respiratory Arrest data from graphs in three publications from the UK Health Security Agency/Public Health England bulletins on the NASSS.
-The three publications were:
+I extracted Cardiac/Respiratory Arrest data from graphs in five publications from the UK Health Security Agency/Public Health England bulletins on the NASSS.
+The five publications were:
 
 https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/860059/NASS_Bulletin_2020_03.pdf
+
+https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/871917/NASS_Bulletin_2020_10.pdf
 
 ![2020 Ambulance bulletin - cardiac](https://user-images.githubusercontent.com/82215025/152960810-58142619-45ba-41fd-b367-b6cc2e08cb79.png)
 
 https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/954014/NASS_Bulletin_2021_02.pdf
+
+https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/871917/NASS_Bulletin_2020_10.pdf
 
 ![2021 Ambulance bulletin - cardiac](https://user-images.githubusercontent.com/82215025/152960850-46ec26b4-e659-4d33-ab98-0dc32be417f5.png)
 
