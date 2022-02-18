@@ -182,7 +182,7 @@ cardiac.2021wk08 <- drop_na(cardiac.2021wk08) # Removes rows where there's only 
 # This is due to the overlapping lines in the original plots.
 
 # Keep only 2020 data
-cardiac.2021wk08 <- filter(cardiac.2021wk08,Date <= as.Date("2021-01-01"))
+# cardiac.2021wk08 <- filter(cardiac.2021wk08,Date <= as.Date("2021-01-01"))
 
 # Pivot the datasets to make them longer
 cardiac.2021wk08.long <- cardiac.2021wk08 %>%
