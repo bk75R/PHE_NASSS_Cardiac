@@ -192,7 +192,6 @@ cardiac.2022 <- rbind.data.frame(cardiac.2022.rest,cardiac.2022.end)
 # Filter out duplicated date ranges from each report #
 ######################################################
 
-# Keep only early 2019 data from 2019 report
 cardiac.2019 <- filter(cardiac.2019,Date <= min(cardiac.2020$Date))
 
 # Keep all of 2020 report data
@@ -207,31 +206,38 @@ cardiac.2021wk08 <- filter(cardiac.2021wk08,Date >= max(cardiac.2021$Date) & Dat
 
 # Pivot the datasets to make them longer
 cardiac.2019.long <- cardiac.2019 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage,maxgap = 30)) %>%
+  mutate(Baseline = na.spline(Baseline,maxgap = 30)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2019")
 
 cardiac.2020.long <- cardiac.2020 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2020")
 
 cardiac.2020wk10.long <- cardiac.2020wk10 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2020wk10")
 
 cardiac.2021.long <- cardiac.2021 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2021")
 
 cardiac.2021wk08.long <- cardiac.2021wk08 %>%
   mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2021wk08")
 
 cardiac.2022.long <- cardiac.2022 %>%
+  #mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2022")
 
