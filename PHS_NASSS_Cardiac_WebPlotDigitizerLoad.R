@@ -34,16 +34,6 @@ colnames(cardiac.2019) <- colnames.cardiac
 # cardiac.2019 <- drop_na(cardiac.2019) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
-# Keep only January 2019 data
-cardiac.2019 <- filter(cardiac.2019,Date >= as.Date("2019-01-01") & Date <= as.Date("2019-01-25")) # Min date of 2020 report is 26/01/19.
-
-# Pivot the datasets to make them longer
-cardiac.2019.long <- cardiac.2019 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2019")
-
-
 #############
 # 2020 data #
 #############
@@ -72,12 +62,6 @@ colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2020) <- colnames.cardiac
 cardiac.2020 <- drop_na(cardiac.2020) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
-
-# Pivot the datasets to make them longer
-cardiac.2020.long <- cardiac.2020 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2020")
 
 #####################
 # 2020 week 10 data #
@@ -108,12 +92,6 @@ colnames(cardiac.2020wk10) <- colnames.cardiac
 cardiac.2020wk10 <- drop_na(cardiac.2020wk10) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
-# Pivot the datasets to make them longer
-cardiac.2020wk10.long <- cardiac.2020wk10 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2020wk10")
-
 #############
 # 2021 data #
 #############
@@ -142,15 +120,6 @@ colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2021) <- colnames.cardiac
 cardiac.2021 <- drop_na(cardiac.2021) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
-
-# Keep only 2020 data
-cardiac.2021 <- filter(cardiac.2021,Date <= as.Date("2021-01-01"))
-
-# Pivot the datasets to make them longer
-cardiac.2021.long <- cardiac.2021 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2021")
 
 #####################
 # 2021 week 08 data #
@@ -181,16 +150,6 @@ colnames(cardiac.2021wk08) <- colnames.cardiac
 cardiac.2021wk08 <- drop_na(cardiac.2021wk08) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
-# Keep only 2020 data
-# cardiac.2021wk08 <- filter(cardiac.2021wk08,Date <= as.Date("2021-01-01"))
-
-# Pivot the datasets to make them longer
-cardiac.2021wk08.long <- cardiac.2021wk08 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2021wk08")
-
-
 #############
 # 2022 data #
 #############
@@ -218,7 +177,6 @@ cardiac.2022 <- right_join(cardiac.2022.7DA,cardiac.2022.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2022) <- colnames.cardiac
 
-# Fill NA values using na.spline() function
 # Split off end portion of data as baseline data extends beyond 2022 seven day average data.
 cardiac.2022.end <- filter(cardiac.2022,Date >= as.Date("2022-01-20"))
 cardiac.2022.rest <- cardiac.2022 %>%
@@ -230,10 +188,54 @@ cardiac.2022.rest$SevenDayAverage <- cardiac.2022.SevenDayAverage.filled
 
 cardiac.2022 <- rbind.data.frame(cardiac.2022.rest,cardiac.2022.end)
 
+######################################################
+# Filter out duplicated date ranges from each report #
+######################################################
+
+# Keep only early 2019 data from 2019 report
+cardiac.2019 <- filter(cardiac.2019,Date <= min(cardiac.2020$Date))
+
+# Keep all of 2020 report data
+
+# Keep segment between end of 2020 report and start of 2021 report from 2020wk10 report
+cardiac.2020wk10 <- filter(cardiac.2020wk10,Date >= max(cardiac.2020$Date) & Date <= min(cardiac.2021$Date)) 
+
+# Keep all of 2021 report data
+
+# Keep segment between end of 2021 report and start of 2022 report from 2021wk08 report
+cardiac.2021wk08 <- filter(cardiac.2021wk08,Date >= max(cardiac.2021$Date) & Date <= min(cardiac.2022$Date)) 
+
 # Pivot the datasets to make them longer
+cardiac.2019.long <- cardiac.2019 %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2019")
+
+cardiac.2020.long <- cardiac.2020 %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2020")
+
+cardiac.2020wk10.long <- cardiac.2020wk10 %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2020wk10")
+
+cardiac.2021.long <- cardiac.2021 %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2021")
+
+cardiac.2021wk08.long <- cardiac.2021wk08 %>%
+  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2021wk08")
+
 cardiac.2022.long <- cardiac.2022 %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2022")
+
+
 
 
 ###########################################################################
@@ -241,8 +243,7 @@ cardiac.2022.long <- cardiac.2022 %>%
 # This will yield modelled daily data for each data type.                 #
 ###########################################################################
 
-# Keep only early 2020 data from 2019 report
-#cardiac.2019 <- filter(cardiac.2019,Date >= min(cardiac.2020$Date))
+
 
 # Baseline data has different date range to seven day average data.
 
