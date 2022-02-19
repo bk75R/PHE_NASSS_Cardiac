@@ -28,7 +28,7 @@ cardiac.2019.baseline$Date <- as_date(cardiac.2019.baseline$Date)
 cardiac.2019.7DA <- cardiac.2019.7DA[!duplicated(cardiac.2019.7DA$Date), ]
 cardiac.2019.baseline <- cardiac.2019.baseline[!duplicated(cardiac.2019.baseline$Date), ]
 
-cardiac.2019 <- right_join(cardiac.2019.7DA,cardiac.2019.baseline,by = "Date")
+cardiac.2019 <- full_join(cardiac.2019.7DA,cardiac.2019.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2019) <- colnames.cardiac
 # cardiac.2019 <- drop_na(cardiac.2019) # Removes rows where there's only one value available.
@@ -57,10 +57,10 @@ cardiac.2020.baseline$Date <- as_date(cardiac.2020.baseline$Date)
 cardiac.2020.7DA <- cardiac.2020.7DA[!duplicated(cardiac.2020.7DA$Date), ]
 cardiac.2020.baseline <- cardiac.2020.baseline[!duplicated(cardiac.2020.baseline$Date), ]
 
-cardiac.2020 <- right_join(cardiac.2020.7DA,cardiac.2020.baseline,by = "Date")
+cardiac.2020 <- full_join(cardiac.2020.7DA,cardiac.2020.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2020) <- colnames.cardiac
-cardiac.2020 <- drop_na(cardiac.2020) # Removes rows where there's only one value available.
+# cardiac.2020 <- drop_na(cardiac.2020) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
 #####################
@@ -86,10 +86,10 @@ cardiac.2020wk10.baseline$Date <- as_date(cardiac.2020wk10.baseline$Date)
 cardiac.2020wk10.7DA <- cardiac.2020wk10.7DA[!duplicated(cardiac.2020wk10.7DA$Date), ]
 cardiac.2020wk10.baseline <- cardiac.2020wk10.baseline[!duplicated(cardiac.2020wk10.baseline$Date), ]
 
-cardiac.2020wk10 <- right_join(cardiac.2020wk10.7DA,cardiac.2020wk10.baseline,by = "Date")
+cardiac.2020wk10 <- full_join(cardiac.2020wk10.7DA,cardiac.2020wk10.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2020wk10) <- colnames.cardiac
-cardiac.2020wk10 <- drop_na(cardiac.2020wk10) # Removes rows where there's only one value available.
+# cardiac.2020wk10 <- drop_na(cardiac.2020wk10) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
 #############
@@ -115,10 +115,10 @@ cardiac.2021.baseline$Date <- as_date(cardiac.2021.baseline$Date)
 cardiac.2021.7DA <- cardiac.2021.7DA[!duplicated(cardiac.2021.7DA$Date), ]
 cardiac.2021.baseline <- cardiac.2021.baseline[!duplicated(cardiac.2021.baseline$Date), ]
 
-cardiac.2021 <- right_join(cardiac.2021.7DA,cardiac.2021.baseline,by = "Date")
+cardiac.2021 <- full_join(cardiac.2021.7DA,cardiac.2021.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2021) <- colnames.cardiac
-cardiac.2021 <- drop_na(cardiac.2021) # Removes rows where there's only one value available.
+# cardiac.2021 <- drop_na(cardiac.2021) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
 #####################
@@ -144,10 +144,10 @@ cardiac.2021wk08.baseline$Date <- as_date(cardiac.2021wk08.baseline$Date)
 cardiac.2021wk08.7DA <- cardiac.2021wk08.7DA[!duplicated(cardiac.2021wk08.7DA$Date), ]
 cardiac.2021wk08.baseline <- cardiac.2021wk08.baseline[!duplicated(cardiac.2021wk08.baseline$Date), ]
 
-cardiac.2021wk08 <- right_join(cardiac.2021wk08.7DA,cardiac.2021wk08.baseline,by = "Date")
+cardiac.2021wk08 <- full_join(cardiac.2021wk08.7DA,cardiac.2021wk08.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2021wk08) <- colnames.cardiac
-cardiac.2021wk08 <- drop_na(cardiac.2021wk08) # Removes rows where there's only one value available.
+# cardiac.2021wk08 <- drop_na(cardiac.2021wk08) # Removes rows where there's only one value available.
 # This is due to the overlapping lines in the original plots.
 
 #############
@@ -173,7 +173,7 @@ cardiac.2022.baseline$Date <- as_date(cardiac.2022.baseline$Date)
 cardiac.2022.7DA <- cardiac.2022.7DA[!duplicated(cardiac.2022.7DA$Date), ]
 cardiac.2022.baseline <- cardiac.2022.baseline[!duplicated(cardiac.2022.baseline$Date), ]
 
-cardiac.2022 <- right_join(cardiac.2022.7DA,cardiac.2022.baseline,by = "Date")
+cardiac.2022 <- full_join(cardiac.2022.7DA,cardiac.2022.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2022) <- colnames.cardiac
 
@@ -206,38 +206,38 @@ cardiac.2021wk08 <- filter(cardiac.2021wk08,Date >= max(cardiac.2021$Date) & Dat
 
 # Pivot the datasets to make them longer
 cardiac.2019.long <- cardiac.2019 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage,maxgap = 30)) %>%
-  mutate(Baseline = na.spline(Baseline,maxgap = 30)) %>%
+  # mutate(SevenDayAverage = na.spline(SevenDayAverage,maxgap = 30)) %>%
+  # mutate(Baseline = na.spline(Baseline,maxgap = 30)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2019")
 
 cardiac.2020.long <- cardiac.2020 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  mutate(Baseline = na.spline(Baseline)) %>%
+  # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2020")
 
 cardiac.2020wk10.long <- cardiac.2020wk10 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  mutate(Baseline = na.spline(Baseline)) %>%
+  # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2020wk10")
 
 cardiac.2021.long <- cardiac.2021 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  mutate(Baseline = na.spline(Baseline)) %>%
+  # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2021")
 
 cardiac.2021wk08.long <- cardiac.2021wk08 %>%
-  mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  mutate(Baseline = na.spline(Baseline)) %>%
+  # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2021wk08")
 
 cardiac.2022.long <- cardiac.2022 %>%
-  #mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
-  mutate(Baseline = na.spline(Baseline)) %>%
+  # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2022")
 
