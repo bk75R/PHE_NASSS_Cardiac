@@ -226,13 +226,13 @@ cardiac.2019.long <- cardiac.2019.filter %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage,maxgap = 30)) %>%
   # mutate(Baseline = na.spline(Baseline,maxgap = 30)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2019")
+  mutate(Report = "2019wk52")
 
 cardiac.2020.long <- cardiac.2020 %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
   # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2020")
+  mutate(Report = "2020wk03")
 
 cardiac.2020wk10.long <- cardiac.2020wk10.filter %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
@@ -244,7 +244,7 @@ cardiac.2021.long <- cardiac.2021 %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
   # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2021")
+  mutate(Report = "2021wk02")
 
 cardiac.2021wk08.long <- cardiac.2021wk08.filter %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
@@ -256,7 +256,7 @@ cardiac.2022.long <- cardiac.2022 %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
   # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
-  mutate(Report = "2022")
+  mutate(Report = "2022wk03")
 
 ##################################################################################
 # Interpolate (approx, linear) between points in baseline and 7 day average data #
