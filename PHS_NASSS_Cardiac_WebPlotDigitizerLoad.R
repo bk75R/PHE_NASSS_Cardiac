@@ -300,5 +300,6 @@ cardiac.calls.report.graphs <- rbind.data.frame(cardiac.2019.long,
                                                 cardiac.2021wk08.long,
                                                 cardiac.2022.long)
 
+cardiac.calls.report.graphs <- drop_na(cardiac.calls.report.graphs) # Remove all NA values.
 ####################
 setwd(RootDirectory)
