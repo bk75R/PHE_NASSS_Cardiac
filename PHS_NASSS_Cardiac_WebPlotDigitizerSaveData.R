@@ -22,15 +22,15 @@ write.csv(cardiac.2020_2022.approx,file = "2019-2022 NASSS Cardiac calls (spread
 #   filter(Date >= as.Date("2018-01-01") & Date <= as.Date("2018-12-31")) %>%
 #   summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline))
 
-cardiac.2020.summary <- cardiac.2019_2022.approx %>%
+cardiac.2019.summary <- cardiac.2019_2022.approx %>%
   filter(Date >= as.Date("2019-01-01") & Date <= as.Date("2019-12-31")) %>%
   summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline))
 
-cardiac.2021.summary <- cardiac.2019_2022.approx %>%
+cardiac.2020.summary <- cardiac.2019_2022.approx %>%
   filter(Date >= as.Date("2020-01-01") & Date <= as.Date("2020-12-31")) %>%
   summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline))
 
-cardiac.2022.summary <- cardiac.2019_2022.approx %>%
+cardiac.2021.summary <- cardiac.2019_2022.approx %>%
   filter(Date >= as.Date("2021-01-01") & Date <= as.Date("2021-12-31")) %>%
   summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline))
 
