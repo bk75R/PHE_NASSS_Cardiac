@@ -24,6 +24,9 @@ colnames(cardiac.2019.baseline) <- column.names
 cardiac.2019.7DA$Date <- as_date(cardiac.2019.7DA$Date)
 cardiac.2019.baseline$Date <- as_date(cardiac.2019.baseline$Date)
 
+# Chop off data in baseline which extends beyond 7DA data
+cardiac.2019.baseline <- filter(cardiac.2019.baseline, Date <= max(cardiac.2019.7DA$Date))
+
 # Remove duplicates
 cardiac.2019.7DA <- cardiac.2019.7DA[!duplicated(cardiac.2019.7DA$Date), ]
 cardiac.2019.baseline <- cardiac.2019.baseline[!duplicated(cardiac.2019.baseline$Date), ]
@@ -57,6 +60,9 @@ cardiac.2020.baseline$Date <- as_date(cardiac.2020.baseline$Date)
 cardiac.2020.7DA <- cardiac.2020.7DA[!duplicated(cardiac.2020.7DA$Date), ]
 cardiac.2020.baseline <- cardiac.2020.baseline[!duplicated(cardiac.2020.baseline$Date), ]
 
+# Chop off data in baseline which extends beyond 7DA data
+cardiac.2020.baseline <- filter(cardiac.2020.baseline, Date <= max(cardiac.2020.7DA$Date))
+
 cardiac.2020 <- full_join(cardiac.2020.7DA,cardiac.2020.baseline,by = "Date")
 colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
 colnames(cardiac.2020) <- colnames.cardiac
@@ -81,6 +87,9 @@ colnames(cardiac.2020wk10.baseline) <- column.names
 # Convert date formats
 cardiac.2020wk10.7DA$Date <- as_date(cardiac.2020wk10.7DA$Date)
 cardiac.2020wk10.baseline$Date <- as_date(cardiac.2020wk10.baseline$Date)
+
+# Chop off data in baseline which extends beyond 7DA data
+cardiac.2020wk10.baseline <- filter(cardiac.2020wk10.baseline, Date <= max(cardiac.2020wk10.7DA$Date))
 
 # Remove duplicates
 cardiac.2020wk10.7DA <- cardiac.2020wk10.7DA[!duplicated(cardiac.2020wk10.7DA$Date), ]
@@ -111,6 +120,9 @@ colnames(cardiac.2021.baseline) <- column.names
 cardiac.2021.7DA$Date <- as_date(cardiac.2021.7DA$Date)
 cardiac.2021.baseline$Date <- as_date(cardiac.2021.baseline$Date)
 
+# Chop off data in baseline which extends beyond 7DA data
+cardiac.2021.baseline <- filter(cardiac.2021.baseline, Date <= max(cardiac.2021.7DA$Date))
+
 # Remove duplicates
 cardiac.2021.7DA <- cardiac.2021.7DA[!duplicated(cardiac.2021.7DA$Date), ]
 cardiac.2021.baseline <- cardiac.2021.baseline[!duplicated(cardiac.2021.baseline$Date), ]
@@ -139,6 +151,9 @@ colnames(cardiac.2021wk08.baseline) <- column.names
 # Convert date formats
 cardiac.2021wk08.7DA$Date <- as_date(cardiac.2021wk08.7DA$Date)
 cardiac.2021wk08.baseline$Date <- as_date(cardiac.2021wk08.baseline$Date)
+
+# Chop off data in baseline which extends beyond 7DA data
+cardiac.2021wk08.baseline <- filter(cardiac.2021wk08.baseline, Date <= max(cardiac.2021wk08.7DA$Date))
 
 # Remove duplicates
 cardiac.2021wk08.7DA <- cardiac.2021wk08.7DA[!duplicated(cardiac.2021wk08.7DA$Date), ]
@@ -183,8 +198,8 @@ cardiac.2022.rest <- cardiac.2022 %>%
   filter(Date < as.Date("2022-01-20")) %>%
   arrange(Date)
 
-cardiac.2022.SevenDayAverage.filled <- na.spline(cardiac.2022.rest$SevenDayAverage)
-cardiac.2022.rest$SevenDayAverage <- cardiac.2022.SevenDayAverage.filled
+# cardiac.2022.SevenDayAverage.filled <- na.spline(cardiac.2022.rest$SevenDayAverage)
+# cardiac.2022.rest$SevenDayAverage <- cardiac.2022.SevenDayAverage.filled
 
 cardiac.2022 <- rbind.data.frame(cardiac.2022.rest,cardiac.2022.end)
 
@@ -192,20 +207,22 @@ cardiac.2022 <- rbind.data.frame(cardiac.2022.rest,cardiac.2022.end)
 # Filter out duplicated date ranges from each report #
 ######################################################
 
-cardiac.2019 <- filter(cardiac.2019,Date <= min(cardiac.2020$Date))
+cardiac.2019.filter <- filter(cardiac.2019,Date <= min(cardiac.2020$Date))
 
 # Keep all of 2020 report data
 
 # Keep segment between end of 2020 report and start of 2021 report from 2020wk10 report
-cardiac.2020wk10 <- filter(cardiac.2020wk10,Date >= max(cardiac.2020$Date) & Date <= min(cardiac.2021$Date)) 
+cardiac.2020wk10.filter <- filter(cardiac.2020wk10,Date >= max(cardiac.2020$Date) & Date <= min(cardiac.2021$Date)) 
 
 # Keep all of 2021 report data
 
 # Keep segment between end of 2021 report and start of 2022 report from 2021wk08 report
-cardiac.2021wk08 <- filter(cardiac.2021wk08,Date >= max(cardiac.2021$Date) & Date <= min(cardiac.2022$Date)) 
+cardiac.2021wk08.filter <- filter(cardiac.2021wk08,Date >= max(cardiac.2021$Date) & Date <= min(cardiac.2022$Date)) 
+
+# Keep all of 2022 report data
 
 # Pivot the datasets to make them longer
-cardiac.2019.long <- cardiac.2019 %>%
+cardiac.2019.long <- cardiac.2019.filter %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage,maxgap = 30)) %>%
   # mutate(Baseline = na.spline(Baseline,maxgap = 30)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
@@ -217,7 +234,7 @@ cardiac.2020.long <- cardiac.2020 %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2020")
 
-cardiac.2020wk10.long <- cardiac.2020wk10 %>%
+cardiac.2020wk10.long <- cardiac.2020wk10.filter %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
   # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
@@ -229,7 +246,7 @@ cardiac.2021.long <- cardiac.2021 %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2021")
 
-cardiac.2021wk08.long <- cardiac.2021wk08 %>%
+cardiac.2021wk08.long <- cardiac.2021wk08.filter %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
   # mutate(Baseline = na.spline(Baseline)) %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
@@ -249,12 +266,15 @@ cardiac.2022.long <- cardiac.2022 %>%
 # This will yield modelled daily data for each data type.                 #
 ###########################################################################
 
-
-
 # Baseline data has different date range to seven day average data.
 
 # Calculate baseline approximation
-cardiac.2019_2022 <- rbind.data.frame(cardiac.2019,cardiac.2020,cardiac.2020wk10,cardiac.2021,cardiac.2021wk08,cardiac.2022)
+cardiac.2019_2022 <- rbind.data.frame(cardiac.2019,
+                                      cardiac.2020,
+                                      cardiac.2020wk10,
+                                      cardiac.2021,
+                                      cardiac.2021wk08,
+                                      cardiac.2022)
 # Remove duplicates
 cardiac.2019_2022 <- cardiac.2019_2022[!duplicated(cardiac.2019_2022$Date), ]
 
