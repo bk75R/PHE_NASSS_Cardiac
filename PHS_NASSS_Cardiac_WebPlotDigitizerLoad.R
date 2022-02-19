@@ -258,27 +258,22 @@ cardiac.2022.long <- cardiac.2022 %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2022")
 
-
-
-
-###########################################################################
-# Interpolate (approx, linear) between baseline and 7 day average points. #
-# This will yield modelled daily data for each data type.                 #
-###########################################################################
-
-# Baseline data has different date range to seven day average data.
+##################################################################################
+# Interpolate (approx, linear) between points in baseline and 7 day average data #
+# This will yield modelled daily data for each data type.                        #
+##################################################################################
 
 # Calculate baseline approximation
-cardiac.2019_2022 <- rbind.data.frame(cardiac.2019,
+cardiac.2019_2022 <- rbind.data.frame(cardiac.2019.filter,
                                       cardiac.2020,
-                                      cardiac.2020wk10,
+                                      cardiac.2020wk10.filter,
                                       cardiac.2021,
-                                      cardiac.2021wk08,
+                                      cardiac.2021wk08.filter,
                                       cardiac.2022)
 # Remove duplicates
 cardiac.2019_2022 <- cardiac.2019_2022[!duplicated(cardiac.2019_2022$Date), ]
 
-date.range.baseline <- seq(as.Date("2019-01-01"),max(cardiac.2019_2022$Date),1) # Start sequence at 01/01/2019 because cardiac.2019 starts at 02/01/2019.
+date.range.baseline <- seq(min(cardiac.2019$Date),max(cardiac.2019_2022$Date),1) # Start sequence at 01/01/2019 because cardiac.2019 starts at 02/01/2019.
 # date.range.baseline <- seq(min(cardiac.2019_2022$Date),max(cardiac.2019_2022$Date),1)
 #day.seq.baseline.full <- seq(1,length(date.range.baseline),1)
 cardiac.2019_2022.baseline.approx <- approx(cardiac.2019_2022$Date,
