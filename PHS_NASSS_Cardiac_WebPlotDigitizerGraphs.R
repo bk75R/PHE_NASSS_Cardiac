@@ -260,7 +260,7 @@ cardiac.calls.report.graphs.points <- ggplot(data = cardiac.calls.report.graphs,
 )+
   ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
           subtitle = GraphSubtitle)+
-  labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
+  labs(caption = "The coloured points were read directly from the graphs using WebPlotDigitizer. The grey points show interpolated data.\n\nGraphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
   theme(text = element_text(family=""),
         plot.caption = element_text(hjust = 0),
@@ -297,7 +297,7 @@ cardiac.calls.report.graphs.points <- ggplot(data = cardiac.calls.report.graphs,
              fill = "grey50",
              colour = "grey50")+
   geom_point(show.legend = TRUE,
-                       size = 1,
+                       size = 0.5,
                        na.rm = TRUE)+
   geom_line(show.legend = TRUE,
             size = 0.15,
