@@ -35,7 +35,7 @@ cardiac.calls.graph.basic <- ggplot(data = cardiac.calls,
                                   colour = Type,
                                   linetype = Type)
                               )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls ",
           subtitle = GraphSubtitle)+
   labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
@@ -139,7 +139,7 @@ cardiac.calls.report.graphs.separate <- ggplot(data = cardiac.calls.report.graph
                                                    linetype = Type,
                                                    group = Type)
                                                )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls ",
           subtitle = GraphSubtitle)+
   labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
@@ -199,7 +199,7 @@ cardiac.calls.report.graphs.separate.colours <- ggplot(data = cardiac.calls.repo
                                                    colour = Report,
                                                    linetype = Type)
 )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls ",
           subtitle = GraphSubtitle)+
   labs(caption = "Graph source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
@@ -258,7 +258,7 @@ cardiac.calls.report.graphs.points <- ggplot(data = cardiac.calls.report.graphs,
                                                            colour = Report,
                                                            shape = Type)
 )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac and respiratory calls ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls ",
           subtitle = GraphSubtitle)+
   labs(caption = "The coloured points were read directly from the graphs using WebPlotDigitizer. The grey points show interpolated data.\n\nGraphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
