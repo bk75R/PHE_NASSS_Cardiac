@@ -27,10 +27,18 @@ https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attac
 ## How the graphs were processed
 The copied graphs were uploaded into WebPlotDigitizer (https://automeris.io/WebPlotDigitizer/) after some mild modification with GIMP (https://www.gimp.org) to remove  gridlines and the daily data trace.
 
+This graph shows all the data from the four reports plotted together.
+![2022-02-21 NASSS Cardiac Calls (reduced y range)](https://user-images.githubusercontent.com/82215025/155010287-d83bdd75-193d-4acd-b189-29eac38d9775.png)
+
+This graph shows which data from each report was used. It also shows interpolated points (in grey) used to fill the gaps between datapoints read using WebPlotDigitizer.
+
+![2022-02-21 NASSS Cardiac Calls (points)](https://user-images.githubusercontent.com/82215025/155010432-ad1f6da3-2b2a-4aa4-b5dd-dd225f0bf443.png)
+
 Data was saved as .csv files then tidied in R (https://cran.r-project.org/) to remove duplicates and combine the datasets.
 Simple graphs were made using ggplot2 (https://ggplot2.tidyverse.org).
 
-![2022-02-05 NASSS Cardiac Calls (reduced y range)](https://user-images.githubusercontent.com/82215025/152962172-9dcc230b-cb94-4eb3-ad48-dd210b850f13.png)
-
 ## Licence
-The data shared here is available under the Open Government Licence (https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+The data and reports shared here are available under the Open Government Licence (https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+
+## Acknowledgements
+The graph style with lines showing where each year starts and ends, and labels for each year, was developed using example code from http://www.jasonfabris.com/blog/dteformat/
