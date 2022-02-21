@@ -11,7 +11,7 @@ write.csv(cardiac.calls,file = "2019-2022 NASSS Cardiac calls (long).csv",
           row.names = FALSE)
 
 # Spreadsheet-friendly format with three columns: Date, Baseline and Calls
-write.csv(cardiac.2020_2022.approx,file = "2019-2022 NASSS Cardiac calls (spreadsheet).csv",
+write.csv(cardiac.2019_2022.approx,file = "2019-2022 NASSS Cardiac calls (spreadsheet).csv",
           row.names = FALSE)
 
 # Output summary totals for each year.
@@ -35,9 +35,9 @@ cardiac.2021.summary <- cardiac.2019_2022.approx %>%
   summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline))
 
 # Remove redundant data frames
-# rm(cardiac.2020,cardiac.2020.7DA,cardiac.2020.baseline,cardiac.2020.long,
-#    cardiac.2021,cardiac.2021.7DA,cardiac.2021.baseline,cardiac.2021.long,
-#    cardiac.2022,cardiac.2022.7DA,cardiac.2022.baseline,cardiac.2022.long)
+rm(cardiac.2020,cardiac.2020.7DA,cardiac.2020.baseline,cardiac.2020.long,
+   cardiac.2021,cardiac.2021.7DA,cardiac.2021.baseline,cardiac.2021.long,
+   cardiac.2022,cardiac.2022.7DA,cardiac.2022.baseline,cardiac.2022.long)
 
 ####################
 setwd(RootDirectory)
