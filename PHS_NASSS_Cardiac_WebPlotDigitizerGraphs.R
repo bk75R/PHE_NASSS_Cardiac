@@ -17,10 +17,14 @@ dte_formatter <- function(x) {
 
 # Create labels and positions for vertical lines which mark the start of each year
 
-vlines.cardiac.calls <- data.frame(Date = c(as.Date("2019-01-01"),as.Date("2020-01-01"),as.Date("2021-01-01"),as.Date("2022-01-01")),
-                                             Year = c(2019,2020,2021,2022),
-                                             Type = rep("SevenDayAverage",4),
-                                             Calls = rep(10,4))
+vlines.cardiac.calls <- data.frame(Date = c(as.Date("2019-01-01"),
+                                            as.Date("2020-01-01"),
+                                            as.Date("2021-01-01"),
+                                            as.Date("2022-01-01"),
+                                            as.Date("2023-01-01")),
+                                             Year = c(2019,2020,2021,2022,2023),
+                                             Type = rep("SevenDayAverage",5),
+                                             Calls = rep(10,5))
 cardiac.linetypes <- c("Baseline" = "dashed", 
                       "SevenDayAverage" = "solid")
 cardiac.labels <- c("Baseline" = "Baseline",
@@ -86,15 +90,20 @@ ggsave(cardiac.calls.graph.original,filename = paste(GraphFileNameRoot," NASSS C
 )
 
 # Regraph with closer y axis to show more detail
-vlines.cardiac.calls.high <- data.frame(Date = c(as.Date("2019-01-01"),as.Date("2020-01-01"),as.Date("2021-01-01"),as.Date("2022-01-01")),
-                                   Year = c(2019,2020,2021,2022),
-                                   Type = rep("SevenDayAverage",4),
-                                   Calls = rep(220,4))
+vlines.cardiac.calls.high <- data.frame(Date = c(as.Date("2019-01-01"),
+                                                 as.Date("2020-01-01"),
+                                                 as.Date("2021-01-01"),
+                                                 as.Date("2022-01-01"),
+                                                 as.Date("2023-01-01")),
+                                   Year = c(2019,2020,2021,2022,2023),
+                                   Type = rep("SevenDayAverage",5),
+                                   Calls = rep(220,5))
 
 cardiac.calls.graph.closer <- cardiac.calls.graph.basic + 
   scale_y_continuous(name = "Calls",
                      labels = label_comma(accuracy = 1),
                      limits = c(NA,NA),
+                     breaks = c(250,300,350,400,450,500),
                      expand = c(0.06,0))+
   geom_vline(data = vlines.cardiac.calls.high,
              aes(xintercept = Date),
