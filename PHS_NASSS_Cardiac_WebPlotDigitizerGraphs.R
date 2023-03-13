@@ -328,6 +328,96 @@ ggsave(cardiac.calls.report.graphs.points,filename = paste(GraphFileNameRoot," N
        height = 1600,
        bg = "white"
 )
+####################
+
+################################################################################################
+# Graph NASSS 7 day average from summer to summer for each year                                #
+################################################################################################
+
+# Classify each year from summer to summer
+# i.e. from 24 June 2019 to 24 June 2020 is "2019-2020"
+# This will allow summer to summer graphs to show midwinter peak in centre of graph
+cardiac.calls.report.graphs <- cardiac.calls.report.graphs %>%
+  mutate(Year = year(Date),
+         SummerYear = case_when(
+           Date <= as.Date("2019-06-24") ~ "2018-2019",
+           Date > as.Date("2019-06-24") & Date <= as.Date("2020-06-24") ~ "2019-2020",
+           Date > as.Date("2020-06-24") & Date <= as.Date("2021-06-24") ~ "2020-2021",
+           Date > as.Date("2021-06-24") & Date <= as.Date("2022-06-24") ~ "2021-2022",
+           Date > as.Date("2022-06-24") & Date <= as.Date("2023-06-24") ~ "2022-2023"
+         )
+         )
+
+
+cardiac.calls.report.graph.summer <- ggplot(data = cardiac.calls.report.graphs,
+                                             aes(x = Date,
+                                                 y = Calls,
+                                                 colour = SummerYear,
+                                                 group = Type,
+                                                 linetype = Type)
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Timeline runs from June to June for each year.\n\nGraphs source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="bottom")+
+  scale_x_date(name = "Date",
+               breaks = "1 month",
+               labels = dte_formatter,
+               expand = c(0.03,0.03))+
+  scale_y_continuous(name = "Calls",
+                     labels = label_comma(accuracy = 1),
+                     #limits = c(0,500),
+                     expand = c(0.06,0))+
+  # geom_vline(data = vlines.cardiac.calls.high,
+  #            aes(xintercept = Date),
+  #            colour = "grey75",
+  #            show.legend = FALSE)+
+  # geom_text(data = vlines.cardiac.calls.high,
+  #           aes(label = Year,
+  #               x = Date,
+  #               y = Calls),
+  #           nudge_x = 15,
+  #           nudge_y = 20,
+  #           colour="grey25",
+  #           angle = 90,
+  #           show.legend = FALSE)+
+  # geom_point(data = cardiac.calls,
+  #            aes(x = Date,
+  #                y = Calls,
+  #                shape = Type),
+  #            #shape = 1,
+  #            size = 0.5,
+  #            fill = "grey50",
+  #            colour = "grey50")+
+  # geom_point(show.legend = TRUE,
+  #            size = 0.5,
+  #            na.rm = TRUE)+
+  geom_line(show.legend = TRUE,
+            size = 0.15,
+            alpha = 0.5,
+            colour = "grey50",
+            na.rm = TRUE)#+
+# scale_linetype_manual(name = "Call type",
+#                       values = cardiac.linetypes,
+#                       labels = cardiac.labels)#+
+# scale_colour_manual(name = "Call type",
+#                     values = cardiac.colours,
+#                     labels = cardiac.labels)
+
+
+ggsave(cardiac.calls.report.graph.summer,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (summer to summer).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
+
 
 ####################
 setwd(RootDirectory)
