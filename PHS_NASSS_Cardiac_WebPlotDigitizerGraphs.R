@@ -334,16 +334,21 @@ ggsave(cardiac.calls.report.graphs.points,filename = paste(GraphFileNameRoot," N
 # Graph NASSS 7 day average from summer to summer for each year                                #
 ################################################################################################
 
+# Calculate midpoint of each year in days
+midpoint2019 <- floor(time_length(interval(ymd("2019-01-01"),ymd("2019-12-31")),"days")/2)
+midpoint2020 <- floor(time_length(interval(ymd("2020-01-01"),ymd("2020-12-31")),"days")/2)
+midpoint2021 <- floor(time_length(interval(ymd("2021-01-01"),ymd("2021-12-31")),"days")/2)
+midpoint2022 <- floor(time_length(interval(ymd("2022-01-01"),ymd("2022-12-31")),"days")/2)
+midpoint2023 <- floor(time_length(interval(ymd("2023-01-01"),ymd("2023-12-31")),"days")/2)
+# These are all "182". Use that in pivot calculations instead.
+
 # Classify each year from summer to summer
 # i.e. from 24 June 2019 to 24 June 2020 is "2019-2020"
 # This will allow summer to summer graphs to show midwinter peak in centre of graph
 cardiac.calls.report.graphs <- cardiac.calls.report.graphs %>%
   filter(Date >= as.Date("2019-01-01")) %>%
   mutate(Year = year(Date),
-         # SummerYearDate = Date - as.Date(cat(Year,"-01-01",sep="")),
          Day = yday(Date),
-         # SummerYearDate = Date - year(Date),
-         # SummerYearDate = as.Date(cat("2020","-",as.character(month(Date)),"-",as.character(day(Date)),sep="")),
          SummerYear = case_when(
            Date <= as.Date("2019-06-24") ~ "2018-2019",
            Date > as.Date("2019-06-24") & Date <= as.Date("2020-06-24") ~ "2019-2020",
@@ -351,20 +356,25 @@ cardiac.calls.report.graphs <- cardiac.calls.report.graphs %>%
            Date > as.Date("2021-06-24") & Date <= as.Date("2022-06-24") ~ "2021-2022",
            Date > as.Date("2022-06-24") & Date <= as.Date("2023-06-24") ~ "2022-2023"
            ),
-         MidYearDay = case_when(
-           Year == 2019 ~ yday("2019-06-24"),
-           Year == 2020 ~ yday("2020-06-24"),
-           Year == 2021 ~ yday("2021-06-24"),
-           Year == 2022 ~ yday("2022-06-24"),
-           Year == 2023 ~ yday("2023-06-24")
-           ),
+         # MidYearDay = case_when(
+         #   Year == 2019 ~ yday("2019-06-24"),
+         #   Year == 2020 ~ yday("2020-06-24"),
+         #   Year == 2021 ~ yday("2021-06-24"),
+         #   Year == 2022 ~ yday("2022-06-24"),
+         #   Year == 2023 ~ yday("2023-06-24")
+        #   ),
          SummerYearDay = case_when(
-           Day <= MidYearDay ~ Day + MidYearDay,
-           Day > MidYearDay ~ Day - MidYearDay
+           Day < 182 ~ as.numeric(Day + 182),
+           Day >= 182 ~ as.numeric(Day - 182)
          )
          )
+cardiac.calls.report.graphs <- arrange(cardiac.calls.report.graphs,SummerYearDay)
 
 cardiac.calls.report.graphs$SummerYear <- as.factor(cardiac.calls.report.graphs$SummerYear)
+
+# Sort dataset by SummerYearDay
+
+
 
 cardiac.calls.report.graph.summer <- ggplot(data = cardiac.calls.report.graphs,
                                              aes(x = SummerYearDay,
@@ -383,7 +393,7 @@ cardiac.calls.report.graph.summer <- ggplot(data = cardiac.calls.report.graphs,
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
         legend.position="right")+
-  scale_x_continuous(breaks = c(0,50,100,175,200,250,300,350))+
+  scale_x_continuous(breaks = c(0,50,100,182,200,250,300,350))+
   scale_y_continuous(name = "Calls",
                      labels = label_comma(accuracy = 1),
                      #limits = c(0,500),
@@ -418,11 +428,11 @@ cardiac.calls.report.graph.summer <- ggplot(data = cardiac.calls.report.graphs,
   #           alpha = 1,
   #           #colour = "grey50",
   #           na.rm = TRUE)+
-  geom_path(show.legend = FALSE,
-            size = 0.5,
-            alpha = 1,
-            #colour = "grey50",
-            na.rm = TRUE)+
+  # geom_path(show.legend = FALSE,
+  #           size = 0.5,
+  #           alpha = 1,
+  #           #colour = "grey50",
+  #           na.rm = TRUE)+
   facet_grid(rows = vars(SummerYear),
              cols = vars(Type))+
   scale_linetype_manual(name = "Call type",
