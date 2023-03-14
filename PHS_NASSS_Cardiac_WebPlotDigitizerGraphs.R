@@ -452,6 +452,192 @@ ggsave(cardiac.calls.report.graph.summer,filename = paste(GraphFileNameRoot," NA
        bg = "white"
 )
 
+################################################################################################
+# Graph NASSS 7 day average for each year on same graph                                        #
+################################################################################################
+
+cardiac.calls.report.graphs$Year <- as.factor(cardiac.calls.report.graphs$Year)
+Year.colours <- c("2019" = "#1B9E77",
+                  "2020" = "#D95F02",
+                  "2021" = "#7570B3",
+                  "2022" = "#E7298A",
+                  "2023" = "#66A61E"
+) 
+
+cardiac.calls.report.graphs.7DayAverage <- filter(cardiac.calls.report.graphs,
+                                                  Type == "SevenDayAverage")
+
+cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs.7DayAverage,
+                                            aes(x = Day,
+                                                y = Calls,
+                                                colour = Year,
+                                                #group = Year,
+                                                #linetype = Type
+                                                )
+                                            )+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls, seven day average ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="right")+
+  scale_x_continuous()+
+  scale_y_continuous(name = "Daily calls",
+                     labels = label_comma(accuracy = 1),
+                     breaks = c(250,300,350,400,450,500),
+                     # limits = c(0,500),
+                     expand = c(0.06,0)
+  )+
+  # geom_point(show.legend = TRUE,
+  #          size = 0.5,
+  #          na.rm = TRUE)+
+  geom_line(show.legend = TRUE,
+            size = 0.5,
+            #alpha = 0.5,
+            na.rm = TRUE)+
+  # scale_linetype_manual(name = "Call type",
+  #                       values = cardiac.linetypes,
+  #                       labels = cardiac.labels)+
+  scale_colour_manual(name = "Year",
+                      values = Year.colours,
+                      labels = cardiac.labels)
+
+  
+
+ggsave(cardiac.calls.report.graph.together,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (seven day average).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
+
+################################################################################################
+# Graph NASSS 7 day average for each year on same graph (cumulative)                           #
+################################################################################################
+
+cardiac.calls.report.graphs.7DayAverage <- cardiac.calls.report.graphs.7DayAverage %>%
+  arrange(., Year,Date, by_group = TRUE) %>%
+  group_by(Year) %>%
+  # order_by(Year) %>%
+  mutate(CallsCum=cumsum(Calls))
+
+
+cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs.7DayAverage,
+                                              aes(x = Day,
+                                                  y = CallsCum,
+                                                  colour = Year,
+                                                  #group = Year,
+                                                  #linetype = Type
+                                              )
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls, seven day average ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="right")+
+  scale_x_continuous()+
+  scale_y_continuous(name = "Cumulative daily calls",
+                     labels = label_comma(accuracy = 1),
+                     # breaks = c(250,300,350,400,450,500),
+                     # limits = c(0,500),
+                     expand = c(0.06,0)
+  )+
+  # geom_point(show.legend = TRUE,
+  #          size = 0.5,
+  #          na.rm = TRUE)+
+  geom_line(show.legend = TRUE,
+            size = 0.5,
+            #alpha = 0.5,
+            na.rm = TRUE)+
+  # scale_linetype_manual(name = "Call type",
+  #                       values = cardiac.linetypes,
+  #                       labels = cardiac.labels)+
+  scale_colour_manual(name = "Year",
+                      values = Year.colours,
+                      labels = cardiac.labels)
+
+
+
+ggsave(cardiac.calls.report.graph.together,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (seven day average, cumulative).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
+
+################################################################################################
+# Graph NASSS baselines for each year on same graph                                            #
+################################################################################################
+
+cardiac.calls.report.graphs$Year <- as.factor(cardiac.calls.report.graphs$Year)
+Year.colours <- c("2019" = "#1B9E77",
+                  "2020" = "#D95F02",
+                  "2021" = "#7570B3",
+                  "2022" = "#E7298A",
+                  "2023" = "#66A61E"
+) 
+
+cardiac.calls.report.graphs.baselines <- filter(cardiac.calls.report.graphs,
+                                                  Type == "Baseline")
+
+cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs.baselines,
+                                              aes(x = Day,
+                                                  y = Calls,
+                                                  colour = Year,
+                                                  #group = Year,
+                                                  #linetype = Type
+                                              )
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls, baselines ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="right")+
+  scale_x_continuous()+
+  scale_y_continuous(name = "Daily calls (baselines)",
+                     labels = label_comma(accuracy = 1),
+                     breaks = c(250,300,350,400,450,500),
+                     # limits = c(0,500),
+                     expand = c(0.06,0)
+  )+
+  # geom_point(show.legend = TRUE,
+  #          size = 0.5,
+  #          na.rm = TRUE)+
+  geom_line(show.legend = TRUE,
+            size = 0.5,
+            #alpha = 0.5,
+            na.rm = TRUE)+
+  # scale_linetype_manual(name = "Call type",
+  #                       values = cardiac.linetypes,
+  #                       labels = cardiac.labels)+
+  scale_colour_manual(name = "Year",
+                      values = Year.colours,
+                      labels = cardiac.labels)
+
+
+
+ggsave(cardiac.calls.report.graph.together,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (baselines).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
+
+
 
 ####################
 setwd(RootDirectory)
