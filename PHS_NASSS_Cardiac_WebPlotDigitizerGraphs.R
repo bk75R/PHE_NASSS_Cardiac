@@ -338,6 +338,7 @@ ggsave(cardiac.calls.report.graphs.points,filename = paste(GraphFileNameRoot," N
 # i.e. from 24 June 2019 to 24 June 2020 is "2019-2020"
 # This will allow summer to summer graphs to show midwinter peak in centre of graph
 cardiac.calls.report.graphs <- cardiac.calls.report.graphs %>%
+  filter(Date >= as.Date("2019-01-01")) %>%
   mutate(Year = year(Date),
          # SummerYearDate = Date - as.Date(cat(Year,"-01-01",sep="")),
          Day = yday(Date),
@@ -350,10 +351,17 @@ cardiac.calls.report.graphs <- cardiac.calls.report.graphs %>%
            Date > as.Date("2021-06-24") & Date <= as.Date("2022-06-24") ~ "2021-2022",
            Date > as.Date("2022-06-24") & Date <= as.Date("2023-06-24") ~ "2022-2023"
            ),
+         MidYearDay = case_when(
+           Year == 2019 ~ yday("2019-06-24"),
+           Year == 2020 ~ yday("2020-06-24"),
+           Year == 2021 ~ yday("2021-06-24"),
+           Year == 2022 ~ yday("2022-06-24"),
+           Year == 2023 ~ yday("2023-06-24")
+           ),
          SummerYearDay = case_when(
-           Day <= 175 ~ Day + 175,
-           Day > 175 ~ Day - 175
-           )
+           Day <= MidYearDay ~ Day + MidYearDay,
+           Day > MidYearDay ~ Day - MidYearDay
+         )
          )
 
 cardiac.calls.report.graphs$SummerYear <- as.factor(cardiac.calls.report.graphs$SummerYear)
@@ -362,8 +370,8 @@ cardiac.calls.report.graph.summer <- ggplot(data = cardiac.calls.report.graphs,
                                              aes(x = SummerYearDay,
                                                  y = Calls,
                                                  colour = SummerYear,
-                                                 group = SummerYear#,
-                                                 #linetype = Type
+                                                 # group = SummerYear,
+                                                 linetype = Type
                                                  )
 )+
   ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls ",
@@ -374,16 +382,13 @@ cardiac.calls.report.graph.summer <- ggplot(data = cardiac.calls.report.graphs,
         plot.caption = element_text(hjust = 0),
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
-        legend.position="bottom")+
-  # scale_x_date(name = "Date",
-  #              breaks = "1 month",
-  #              labels = dte_formatter,
-  #              expand = c(0.03,0.03))+
-  scale_x_continuous()+
+        legend.position="right")+
+  scale_x_continuous(breaks = c(0,50,100,175,200,250,300,350))+
   scale_y_continuous(name = "Calls",
                      labels = label_comma(accuracy = 1),
                      #limits = c(0,500),
-                     expand = c(0.06,0))+
+                     expand = c(0.06,0)
+                     )+
   # geom_vline(data = vlines.cardiac.calls.high,
   #            aes(xintercept = Date),
   #            colour = "grey75",
@@ -405,20 +410,28 @@ cardiac.calls.report.graph.summer <- ggplot(data = cardiac.calls.report.graphs,
   #            size = 0.5,
   #            fill = "grey50",
   #            colour = "grey50")+
-  # geom_point(show.legend = TRUE,
-  #            size = 0.5,
-  #            na.rm = TRUE)+
-  geom_line(show.legend = TRUE,
-            size = 0.15,
-            alpha = 0.5,
+  geom_point(show.legend = TRUE,
+            size = 0.5,
+            na.rm = TRUE)+
+  # geom_line(show.legend = TRUE,
+  #           size = 0.5,
+  #           alpha = 1,
+  #           #colour = "grey50",
+  #           na.rm = TRUE)+
+  geom_path(show.legend = FALSE,
+            size = 0.5,
+            alpha = 1,
             #colour = "grey50",
             na.rm = TRUE)+
-scale_linetype_manual(name = "Call type",
+  facet_grid(rows = vars(SummerYear),
+             cols = vars(Type))+
+  scale_linetype_manual(name = "Call type",
                       values = cardiac.linetypes,
                       labels = cardiac.labels)#+
 # scale_colour_manual(name = "Call type",
 #                     values = cardiac.colours,
-#                     labels = cardiac.labels)
+#                     labels = cardiac.labels)+
+  
 
 
 ggsave(cardiac.calls.report.graph.summer,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (summer to summer).png",sep=""),
