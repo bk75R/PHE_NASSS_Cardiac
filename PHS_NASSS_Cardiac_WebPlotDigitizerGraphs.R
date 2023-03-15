@@ -456,6 +456,22 @@ ggsave(cardiac.calls.report.graph.summer,filename = paste(GraphFileNameRoot," NA
 # Graph NASSS 7 day average for each year on same graph                                        #
 ################################################################################################
 
+day.breaks <- c(yday("2020-01-01"),
+                yday("2020-02-01"),
+                yday("2020-03-01"),
+                yday("2020-04-01"),
+                yday("2020-05-01"),
+                yday("2020-06-01"),
+                yday("2020-07-01"),
+                yday("2020-08-01"),
+                yday("2020-09-01"),
+                yday("2020-10-01"),
+                yday("2020-11-01"),
+                yday("2020-12-01"),
+                yday("2020-12-31"))
+  
+day.breaks.labels <- c("J","F","M","A","M","J","J","A","S","O","N","D","")
+
 cardiac.calls.report.graphs$Year <- as.factor(cardiac.calls.report.graphs$Year)
 Year.colours <- c("2019" = "#1B9E77",
                   "2020" = "#D95F02",
@@ -484,7 +500,9 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
         legend.position="right")+
-  scale_x_continuous()+
+  scale_x_continuous(name = "Date",
+                     breaks = day.breaks,
+                     labels = day.breaks.labels)+
   scale_y_continuous(name = "Daily calls",
                      labels = label_comma(accuracy = 1),
                      breaks = c(250,300,350,400,450,500),
@@ -495,8 +513,8 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs
   #          size = 0.5,
   #          na.rm = TRUE)+
   geom_line(show.legend = TRUE,
-            size = 0.5,
-            #alpha = 0.5,
+            size =1.5,
+            alpha = 0.75,
             na.rm = TRUE)+
   # scale_linetype_manual(name = "Call type",
   #                       values = cardiac.linetypes,
@@ -543,7 +561,9 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
         legend.position="right")+
-  scale_x_continuous()+
+  scale_x_continuous(name = "Date",
+                     breaks = day.breaks,
+                     labels = day.breaks.labels)+
   scale_y_continuous(name = "Cumulative daily calls",
                      labels = label_comma(accuracy = 1),
                      # breaks = c(250,300,350,400,450,500),
@@ -554,8 +574,8 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs
   #          size = 0.5,
   #          na.rm = TRUE)+
   geom_line(show.legend = TRUE,
-            size = 0.5,
-            #alpha = 0.5,
+            size =1.5,
+            alpha = 0.75,
             na.rm = TRUE)+
   # scale_linetype_manual(name = "Call type",
   #                       values = cardiac.linetypes,
@@ -606,7 +626,9 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
         legend.position="right")+
-  scale_x_continuous()+
+  scale_x_continuous(name = "Date",
+                     breaks = day.breaks,
+                     labels = day.breaks.labels)+
   scale_y_continuous(name = "Daily calls (baselines)",
                      labels = label_comma(accuracy = 1),
                      breaks = c(250,300,350,400,450,500),
@@ -617,8 +639,8 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs
   #          size = 0.5,
   #          na.rm = TRUE)+
   geom_line(show.legend = TRUE,
-            size = 0.5,
-            #alpha = 0.5,
+            size =1.5,
+            alpha = 0.75,
             na.rm = TRUE)+
   # scale_linetype_manual(name = "Call type",
   #                       values = cardiac.linetypes,
