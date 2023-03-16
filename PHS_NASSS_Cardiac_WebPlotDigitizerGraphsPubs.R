@@ -138,10 +138,11 @@ day.breaks <- c(yday("2020-01-01"),
                 yday("2020-09-01"),
                 yday("2020-10-01"),
                 yday("2020-11-01"),
-                yday("2020-12-01"),
-                yday("2020-12-31"))
+                yday("2020-12-01")#,
+                #yday("2020-12-31")
+                )
 
-day.breaks.labels <- c("J","F","M","A","M","J","J","A","S","O","N","D","")
+day.breaks.labels <- c("J","F","M","A","M","J","J","A","S","O","N","D")
 
 cardiac.calls.report.graphs$Year <- as.factor(cardiac.calls.report.graphs$Year)
 Year.colours <- c("2019" = "#1B9E77",
