@@ -234,7 +234,7 @@ colnames(cardiac.2022wk12) <- colnames.cardiac
 # Split off end portion of data as baseline data extends beyond 2022 seven day average data.
 cardiac.2022wk12.end <- filter(cardiac.2022,Date >= as.Date("2022-01-20"))
 cardiac.2022wk12.rest <- cardiac.2022wk12 %>%
-  filter(Date < as.Date("2022-01-20")) %>%
+  filter(Date < as.Date("2022-03-02")) %>%
   arrange(Date)
 
 # cardiac.2022wk12.SevenDayAverage.filled <- na.spline(cardiac.2022wk12.rest$SevenDayAverage)
@@ -301,7 +301,7 @@ cardiac.2021wk08.filter <- filter(cardiac.2021wk08,Date >= max(cardiac.2021$Date
 # Keep all of 2022 report data
 
 # Keep segment between end of 2022 report and start of 2023 report from 2022wk12 report
-cardiac.2022wk12.filter <- filter(cardiac.2022wk12,Date >= max(cardiac.2022$Date) & Date <= min(cardiac.2023$Date)) 
+# cardiac.2022wk12.filter <- filter(cardiac.2022wk12,Date >= max(cardiac.2022$Date) & Date <= min(cardiac.2023$Date)) 
 
 
 # Pivot the datasets to make them longer
@@ -341,6 +341,11 @@ cardiac.2022.long <- cardiac.2022 %>%
   pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
   mutate(Report = "2022wk03")
 
+cardiac.2022wk12.long <- cardiac.2022wk12 %>%
+  # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
+  # mutate(Baseline = na.spline(Baseline)) %>%
+  pivot_longer(SevenDayAverage:Baseline,names_to = "Type",values_to = "Calls") %>%
+  mutate(Report = "2022wk12")
 
 cardiac.2023.long <- cardiac.2023 %>%
   # mutate(SevenDayAverage = na.spline(SevenDayAverage)) %>%
@@ -405,6 +410,7 @@ cardiac.calls.report.graphs <- rbind.data.frame(cardiac.2019.long,
                                                 cardiac.2021.long,
                                                 cardiac.2021wk08.long,
                                                 cardiac.2022.long,
+                                                cardiac.2022wk12.long,
                                                 cardiac.2023.long)
 
 cardiac.calls.report.graphs <- drop_na(cardiac.calls.report.graphs) # Remove all NA values.
