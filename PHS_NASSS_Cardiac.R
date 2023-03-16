@@ -36,6 +36,8 @@ source("PHS_NASSS_Cardiac_WebPlotDigitizerLoad.R") # Load data extracted from gr
 
 source("PHS_NASSS_Cardiac_WebPlotDigitizerGraphs.R") # Graph data from WebPlotDigitizer
 
+source("PHS_NASSS_Cardiac_WebPlotDigitizerGraphsPubs.R") # Graph data from WebPlotDigitizer(publication ready versions)
+
 source("PHS_NASSS_Cardiac_WebPlotDigitizerSaveData.R") # Save data with formats for easier reuse (for R and spreadsheets)
 
 ##########################################################################################
