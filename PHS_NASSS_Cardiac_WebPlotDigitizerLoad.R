@@ -204,6 +204,45 @@ cardiac.2022.rest <- cardiac.2022 %>%
 cardiac.2022 <- rbind.data.frame(cardiac.2022.rest,cardiac.2022.end)
 
 
+#####################
+# 2022 week 12 data #
+#####################
+
+# Load data
+WPD.2022wk12.7DA.filename <- "2022 week 12 Ambulance bulletin - cardiac - 7 day average.csv"
+WPD.2022wk12.baseline.filename <- "2022 week 12 Ambulance bulletin - cardiac - baseline.csv"
+cardiac.2022wk12.7DA <- read.csv(WPD.2022wk12.7DA.filename,header = FALSE, sep = ",")
+cardiac.2022wk12.baseline <- read.csv(WPD.2022wk12.baseline.filename,header = FALSE, sep = ",")
+
+# Change column names
+column.names <- c("Date","Calls")
+colnames(cardiac.2022wk12.7DA) <- column.names
+colnames(cardiac.2022wk12.baseline) <- column.names
+
+# Convert date formats
+cardiac.2022wk12.7DA$Date <- as_date(cardiac.2022wk12.7DA$Date)
+cardiac.2022wk12.baseline$Date <- as_date(cardiac.2022wk12.baseline$Date)
+
+# Remove duplicates
+cardiac.2022wk12.7DA <- cardiac.2022wk12.7DA[!duplicated(cardiac.2022wk12.7DA$Date), ]
+cardiac.2022wk12.baseline <- cardiac.2022wk12.baseline[!duplicated(cardiac.2022wk12.baseline$Date), ]
+
+cardiac.2022wk12 <- full_join(cardiac.2022wk12.7DA,cardiac.2022wk12.baseline,by = "Date")
+colnames.cardiac <- c("Date","SevenDayAverage","Baseline")
+colnames(cardiac.2022wk12) <- colnames.cardiac
+
+# Split off end portion of data as baseline data extends beyond 2022 seven day average data.
+cardiac.2022wk12.end <- filter(cardiac.2022,Date >= as.Date("2022-01-20"))
+cardiac.2022wk12.rest <- cardiac.2022wk12 %>%
+  filter(Date < as.Date("2022-01-20")) %>%
+  arrange(Date)
+
+# cardiac.2022wk12.SevenDayAverage.filled <- na.spline(cardiac.2022wk12.rest$SevenDayAverage)
+# cardiac.2022wk12.rest$SevenDayAverage <- cardiac.2022wk12.SevenDayAverage.filled
+
+cardiac.2022wk12 <- rbind.data.frame(cardiac.2022wk12.rest,cardiac.2022wk12.end)
+
+
 #############
 # 2023 data #
 #############
@@ -260,6 +299,10 @@ cardiac.2020wk10.filter <- filter(cardiac.2020wk10,Date >= max(cardiac.2020$Date
 cardiac.2021wk08.filter <- filter(cardiac.2021wk08,Date >= max(cardiac.2021$Date) & Date <= min(cardiac.2022$Date)) 
 
 # Keep all of 2022 report data
+
+# Keep segment between end of 2022 report and start of 2023 report from 2022wk12 report
+cardiac.2022wk12.filter <- filter(cardiac.2022wk12,Date >= max(cardiac.2022$Date) & Date <= min(cardiac.2023$Date)) 
+
 
 # Pivot the datasets to make them longer
 cardiac.2019.long <- cardiac.2019.filter %>%
