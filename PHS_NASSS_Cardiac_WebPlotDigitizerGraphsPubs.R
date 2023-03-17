@@ -127,14 +127,17 @@ ggsave(cardiac.calls.report.graph.summer,filename = paste(GraphFileNameRoot," NA
 # Graph NASSS 7 day average for each year on same graph                                        #
 ################################################################################################
 
+# The following graphs do not use the cardiac.calls.report.graphs dataset.
+# They use cardiac.2019_2023.approx since this has complete data for every day of each year.
+# cardiac.calls.report.graphs only contains the data read using WebPlotDigitizer and has some gaps.
+# In cardiac.2019_2023.approx the gaps are filled using interpolated data.
+
 cardiac.2019_2023.approx.graph <- cardiac.2019_2023.approx %>%
   pivot_longer(Baseline:SevenDayAverage,names_to = "Type",values_to = "Calls") %>%
   filter(Date > as.Date("2019-01-01")) %>%
   mutate(Year = year(Date),
          Day = yday(Date)
   )
-
-
 
 day.breaks <- c(yday("2020-01-01"),
                 yday("2020-02-01"),
