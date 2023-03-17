@@ -127,6 +127,15 @@ ggsave(cardiac.calls.report.graph.summer,filename = paste(GraphFileNameRoot," NA
 # Graph NASSS 7 day average for each year on same graph                                        #
 ################################################################################################
 
+cardiac.2019_2023.approx.graph <- cardiac.2019_2023.approx %>%
+  pivot_longer(Baseline:SevenDayAverage,names_to = "Type",values_to = "Calls") %>%
+  filter(Date > as.Date("2019-01-01")) %>%
+  mutate(Year = year(Date),
+         Day = yday(Date)
+  )
+
+
+
 day.breaks <- c(yday("2020-01-01"),
                 yday("2020-02-01"),
                 yday("2020-03-01"),
@@ -144,7 +153,7 @@ day.breaks <- c(yday("2020-01-01"),
 
 day.breaks.labels <- c("J","F","M","A","M","J","J","A","S","O","N","D")
 
-cardiac.calls.report.graphs$Year <- as.factor(cardiac.calls.report.graphs$Year)
+cardiac.2019_2023.approx.graph$Year <- as.factor(cardiac.2019_2023.approx.graph$Year)
 Year.colours <- c("2019" = "#1B9E77",
                   "2020" = "#D95F02",
                   "2021" = "#7570B3",
@@ -152,10 +161,10 @@ Year.colours <- c("2019" = "#1B9E77",
                   "2023" = "#66A61E"
 ) 
 
-cardiac.calls.report.graphs.7DayAverage <- filter(cardiac.calls.report.graphs,
+cardiac.2019_2023.approx.graph.7DayAverage <- filter(cardiac.2019_2023.approx.graph,
                                                   Type == "SevenDayAverage")
 
-cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs.7DayAverage,
+cardiac.calls.report.graph.together <- ggplot(data = cardiac.2019_2023.approx.graph.7DayAverage,
                                               aes(x = Day,
                                                   y = Calls,
                                                   colour = Year,
@@ -209,14 +218,14 @@ ggsave(cardiac.calls.report.graph.together,filename = paste(GraphFileNameRoot," 
 # Graph NASSS 7 day average for each year on same graph (cumulative)                           #
 ################################################################################################
 
-cardiac.calls.report.graphs.7DayAverage <- cardiac.calls.report.graphs.7DayAverage %>%
+cardiac.2019_2023.approx.graph.7DayAverage <- cardiac.2019_2023.approx.graph.7DayAverage %>%
   arrange(., Year,Date, by_group = TRUE) %>%
-  group_by(Year) %>%
+  group_by(Year,Type) %>%
   # order_by(Year) %>%
   mutate(CallsCum=cumsum(Calls))
 
 
-cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs.7DayAverage,
+cardiac.calls.report.graph.together <- ggplot(data = cardiac.2019_2023.approx.graph.7DayAverage,
                                               aes(x = Day,
                                                   y = CallsCum,
                                                   colour = Year,
@@ -270,7 +279,7 @@ ggsave(cardiac.calls.report.graph.together,filename = paste(GraphFileNameRoot," 
 # Graph NASSS baselines for each year on same graph                                            #
 ################################################################################################
 
-cardiac.calls.report.graphs$Year <- as.factor(cardiac.calls.report.graphs$Year)
+cardiac.2019_2023.approx.graph$Year <- as.factor(cardiac.2019_2023.approx.graph$Year)
 Year.colours <- c("2019" = "#1B9E77",
                   "2020" = "#D95F02",
                   "2021" = "#7570B3",
@@ -278,10 +287,10 @@ Year.colours <- c("2019" = "#1B9E77",
                   "2023" = "#66A61E"
 ) 
 
-cardiac.calls.report.graphs.baselines <- filter(cardiac.calls.report.graphs,
+cardiac.2019_2023.approx.graph.baselines <- filter(cardiac.2019_2023.approx.graph,
                                                 Type == "Baseline")
 
-cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs.baselines,
+cardiac.calls.report.graph.together <- ggplot(data = cardiac.2019_2023.approx.graph.baselines,
                                               aes(x = Day,
                                                   y = Calls,
                                                   colour = Year,
