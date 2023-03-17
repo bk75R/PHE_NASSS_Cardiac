@@ -48,6 +48,26 @@ cardiac.2019.summary.check <- cardiac.2019_2023.approx %>%
   #summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline,na.rm = TRUE))
 # The cumulative sum graph is wrong - cumulative figures are too small. Recheck graph code.
 
+# Graph cumsum code
+# cardiac.calls.report.graphs.7DayAverage <- cardiac.calls.report.graphs.7DayAverage %>%
+#   arrange(., Year,Date, by_group = TRUE) %>%
+#   group_by(Year,Type) %>%
+#   # order_by(Year) %>%
+#   mutate(CallsCum=cumsum(Calls))
+# Adapt to cardiac.2019_2023.approx which uses the same data without report tags
+cumsumcheck <- cardiac.2019_2023.approx %>%
+  filter(Date >= as.Date("2019-01-02")) %>% # 2019-01-01 has no value in SevenDayAverage column
+  mutate(Year = year(Date)) %>%
+  arrange(., Year,Date, by_group = TRUE) %>%
+  group_by(Year) %>%
+  # order_by(Year) %>%
+  mutate(BaselineCum=cumsum(Baseline),
+         SevenDayAverageCum = cumsum(SevenDayAverage))
+# 2019 cumsum is ~101,000 for 7 day average.
+# This makes sense. Why is the graph wrong?
+# cardiac.calls.report.graphs.7DayAverage has several missing days. This reduces the cumulative sum.
+# Redo this dataset to include missing data.
+# cardiac.2019.summary etc as above are correct.
 
 
 # Remove redundant data frames
