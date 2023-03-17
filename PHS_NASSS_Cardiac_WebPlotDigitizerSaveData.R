@@ -38,6 +38,18 @@ cardiac.2022.summary <- cardiac.2019_2023.approx %>%
   filter(Date >= as.Date("2022-01-01") & Date <= as.Date("2022-12-31")) %>%
   summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline))
 
+# These give different results to the cumsum() calculations in cardiac.calls.report.graphs.7DayAverage
+# Redo to check.
+
+cardiac.2019.summary.check <- cardiac.2019_2023.approx %>%
+  filter(Date >= as.Date("2019-01-02") & Date <= as.Date("2019-12-31")) %>%
+  mutate(SevenDayAverage.cum = cumsum(SevenDayAverage),
+         Baseline.cum = cumsum(Baseline))# %>%
+  #summarise(Daily = sum(SevenDayAverage,na.rm = TRUE),Baseline = sum(Baseline,na.rm = TRUE))
+# The cumulative sum graph is wrong - cumulative figures are too small. Recheck graph code.
+
+
+
 # Remove redundant data frames
 rm(cardiac.2020,cardiac.2020.7DA,cardiac.2020.baseline,cardiac.2020.long,
    cardiac.2021,cardiac.2021.7DA,cardiac.2021.baseline,cardiac.2021.long,
