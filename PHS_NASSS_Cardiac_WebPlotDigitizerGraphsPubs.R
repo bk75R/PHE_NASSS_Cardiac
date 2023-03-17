@@ -224,7 +224,7 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.calls.report.graphs
                                                   #linetype = Type
                                               )
 )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls, seven day average ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls, cumulative seven day average ",
           subtitle = GraphSubtitle)+
   labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
