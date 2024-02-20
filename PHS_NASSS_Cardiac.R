@@ -17,6 +17,7 @@ library(dplyr)
 library(scales)
 library(lubridate)
 library(zoo)
+library(readxl)
 
 ###################################################
 #                                                 #
@@ -34,11 +35,13 @@ GraphFileNameRoot <- as.character(format(Sys.Date(),"%Y-%m-%d"))
 
 source("PHS_NASSS_Cardiac_WebPlotDigitizerLoad.R") # Load data extracted from graph using WebPlotDigitizer - https://apps.automeris.io/wpd/
 
-source("PHS_NASSS_Cardiac_WebPlotDigitizerGraphs.R") # Graph data from WebPlotDigitizer
+# source("PHS_NASSS_Cardiac_WebPlotDigitizerGraphs.R") # Graph data from WebPlotDigitizer
 
-source("PHS_NASSS_Cardiac_WebPlotDigitizerGraphsPubs.R") # Graph data from WebPlotDigitizer(publication ready versions)
+# source("PHS_NASSS_Cardiac_WebPlotDigitizerGraphsPubs.R") # Graph data from WebPlotDigitizer(publication ready versions)
 
-source("PHS_NASSS_Cardiac_WebPlotDigitizerSaveData.R") # Save data with formats for easier reuse (for R and spreadsheets)
+# source("PHS_NASSS_Cardiac_WebPlotDigitizerSaveData.R") # Save data with formats for easier reuse (for R and spreadsheets)
+
+source("PHS_NASSS_Cardiac_FOI2024_load.R") # Load 2024 FOI data.
 
 ##########################################################################################
 setwd(RootDirectory)
