@@ -14,7 +14,12 @@ FOI2024.data.mod <- FOI2024.data %>%
   mutate("Week" = as.numeric(substr(YrWk,6,8))) %>%
   select(-YrWk) %>%
   relocate(Week, .before = EMAS) %>%
-  relocate(Year, .before = Week)
+  relocate(Year, .before = Week) %>%
+  # Pivot data
+  pivot_longer(EMAS:EEAS,
+               names_to = "Trust",
+               values_to = "CardiacCalls")
+
   
 ####################
 setwd(RootDirectory)
