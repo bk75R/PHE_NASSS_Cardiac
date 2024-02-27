@@ -1,11 +1,15 @@
 setwd(GraphsDirectory)
 ######################
 
+GraphSubtitle <- "Graph by @bouncingkitten | https://www.drowningindata.blog"
+
 ################################################################################################
-# Graph NASSS baselines for each year on same graph                                            #
+# Graph FOI data weekly cardiac calls for each trust on same graph                             #
 ################################################################################################
 
 FOI2024.data.mod$Year <- as.factor(FOI2024.data.mod$Year)
+FOI2024.data.mod$Trust <- as.factor(FOI2024.data.mod$Trust)
+
 Year.colours <- c("2019" = "#1B9E77",
                   "2020" = "#D95F02",
                   "2021" = "#7570B3",
@@ -13,18 +17,16 @@ Year.colours <- c("2019" = "#1B9E77",
                   "2023" = "#66A61E"
 ) 
 
-cardiac.2019_2023.approx.graph.baselines <- filter(cardiac.2019_2023.approx.graph,
-                                                   Type == "Baseline")
 
-cardiac.calls.report.graph.together <- ggplot(data = cardiac.2019_2023.approx.graph.baselines,
-                                              aes(x = Day,
-                                                  y = Calls,
-                                                  colour = Year,
-                                                  #group = Year,
-                                                  #linetype = Type
-                                              )
-)+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nCardiac/respiratory arrest calls, baselines ",
+FOI2024.graph <- ggplot(data = FOI2024.data.mod,
+                        aes(x = Week,
+                            y = CardiacCalls,
+                            colour = Trust,
+                            # group = Trust,
+                            #linetype = Type
+                            )
+                        )+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls,  ",
           subtitle = GraphSubtitle)+
   labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
@@ -33,32 +35,20 @@ cardiac.calls.report.graph.together <- ggplot(data = cardiac.2019_2023.approx.gr
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
         legend.position="right")+
-  scale_x_continuous(name = "Date",
-                     breaks = day.breaks,
-                     labels = day.breaks.labels)+
-  scale_y_continuous(name = "Daily calls (baselines)",
+  scale_x_continuous(name = "Week")+
+  scale_y_continuous(name = "Weekly calls",
                      labels = label_comma(accuracy = 1),
-                     breaks = c(250,300,350,400,450,500),
+                     # breaks = c(250,300,350,400,450,500),
                      # limits = c(0,500),
                      expand = c(0.06,0)
   )+
-  # geom_point(show.legend = TRUE,
-  #          size = 0.5,
-  #          na.rm = TRUE)+
   geom_line(show.legend = TRUE,
             size =1.5,
             alpha = 0.75,
-            na.rm = TRUE)+
-  # scale_linetype_manual(name = "Call type",
-  #                       values = cardiac.linetypes,
-  #                       labels = cardiac.labels)+
-  scale_colour_manual(name = "Year",
-                      values = Year.colours,
-                      labels = cardiac.labels)
+            na.rm = TRUE)
 
 
-
-ggsave(cardiac.calls.report.graph.together,filename = paste(GraphFileNameRoot," NASSS Cardiac Calls (baselines).png",sep=""),
+ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," FOI 2024 weekly cardiac calls by Trust.png",sep=""),
        device = png,
        units = "px",
        width = 2300,
