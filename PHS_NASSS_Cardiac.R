@@ -42,6 +42,6 @@ source("PHS_NASSS_Cardiac_WebPlotDigitizerLoad.R") # Load data extracted from gr
 # source("PHS_NASSS_Cardiac_WebPlotDigitizerSaveData.R") # Save data with formats for easier reuse (for R and spreadsheets)
 
 source("PHS_NASSS_Cardiac_FOI2024_load.R") # Load 2024 FOI data.
-
+source("PHS_NASSS_Cardiac_FOI2024_graph.R") # Graph 2024 FOI data.
 ##########################################################################################
 setwd(RootDirectory)
