@@ -17,6 +17,17 @@ Year.colours <- c("2019" = "#1B9E77",
                   "2023" = "#66A61E"
 ) 
 
+trust.labels <- c("EEAS" = "East of England",
+                  "EMAS" = "East Midlands",
+                  "LAS" = "London",
+                  "NEAS" = "North East",
+                  "NWAS" = "North West",
+                  "SCAS" = "South Central",
+                  "SECAS" = "South East Coast",
+                  "SWAS" = "South West",
+                  "WMAS" = "West Midlands",
+                  "YAS" = "Yorkshire")
+
 
 FOI2024.graph <- ggplot(data = FOI2024.data.mod,
                         aes(x = Week,
@@ -46,7 +57,6 @@ FOI2024.graph <- ggplot(data = FOI2024.data.mod,
             size =1.5,
             alpha = 0.75,
             na.rm = TRUE)
-
 
 ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," FOI 2024 weekly cardiac calls by Trust.png",sep=""),
        device = png,
