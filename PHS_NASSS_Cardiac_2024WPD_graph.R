@@ -67,5 +67,45 @@ ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," NASSS weekly cardiac c
 )
 
 
+FOI2024.graph.faceted <- ggplot(data = file.data.all,
+                        aes(x = Date,
+                            y = Calls,
+                            colour = Region,
+                            # group = Trust,
+                            #linetype = Type
+                        )
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls,  ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="right")+
+  scale_x_date(name = "Date")+
+  scale_y_continuous(name = "Weekly calls",
+                     labels = label_comma(accuracy = 1),
+                     # breaks = c(250,300,350,400,450,500),
+                     # limits = c(0,500),
+                     expand = c(0.06,0)
+  )+
+  geom_line(show.legend = FALSE,
+            size =0.5,
+            alpha = 0.75,
+            na.rm = TRUE)+
+  facet_wrap(vars(Region),
+             scales = "free_y")
+
+ggsave(FOI2024.graph.faceted,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (faceted).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
+
+
 ####################
 setwd(RootDirectory)
