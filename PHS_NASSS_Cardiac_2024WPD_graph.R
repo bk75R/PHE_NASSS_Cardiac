@@ -7,8 +7,8 @@ GraphSubtitle <- "Graph by @bouncingkitten | https://www.drowningindata.blog"
 # Graph FOI data weekly cardiac calls for each trust on same graph                             #
 ################################################################################################
 
-FOI2024.data.mod$Year <- as.factor(FOI2024.data.mod$Year)
-FOI2024.data.mod$Trust <- as.factor(FOI2024.data.mod$Trust)
+file.data.all$Report <- as.factor(file.data.all$Report)
+file.data.all$Region <- as.factor(file.data.all$Region)
 
 Year.colours <- c("2019" = "#1B9E77",
                   "2020" = "#D95F02",
@@ -17,22 +17,22 @@ Year.colours <- c("2019" = "#1B9E77",
                   "2023" = "#66A61E"
 ) 
 
-trust.labels <- c("EEAS" = "East of England",
-                  "EMAS" = "East Midlands",
-                  "LAS" = "London",
-                  "NEAS" = "North East",
-                  "NWAS" = "North West",
-                  "SCAS" = "South Central",
-                  "SECAS" = "South East Coast",
-                  "SWAS" = "South West",
-                  "WMAS" = "West Midlands",
-                  "YAS" = "Yorkshire")
+trust.labels <- c("EE" = "East of England",
+                  "EM" = "East Midlands",
+                  "L" = "London",
+                  "NE" = "North East",
+                  "NW" = "North West",
+                  "SC" = "South Central",
+                  "SEC" = "South East Coast",
+                  "SW" = "South West",
+                  "WM" = "West Midlands",
+                  "Y" = "Yorkshire")
 
 
-FOI2024.graph <- ggplot(data = FOI2024.data.mod,
-                        aes(x = Week,
-                            y = CardiacCalls,
-                            colour = Trust,
+FOI2024.graph <- ggplot(data = file.data.all,
+                        aes(x = Date,
+                            y = Calls,
+                            colour = Region,
                             # group = Trust,
                             #linetype = Type
                             )
@@ -46,7 +46,7 @@ FOI2024.graph <- ggplot(data = FOI2024.data.mod,
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
         legend.position="right")+
-  scale_x_continuous(name = "Week")+
+  scale_x_date(name = "Date")+
   scale_y_continuous(name = "Weekly calls",
                      labels = label_comma(accuracy = 1),
                      # breaks = c(250,300,350,400,450,500),
@@ -58,7 +58,7 @@ FOI2024.graph <- ggplot(data = FOI2024.data.mod,
             alpha = 0.75,
             na.rm = TRUE)
 
-ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," FOI 2024 weekly cardiac calls by Trust.png",sep=""),
+ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust.png",sep=""),
        device = png,
        units = "px",
        width = 2300,
