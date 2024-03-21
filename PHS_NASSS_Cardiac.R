@@ -44,5 +44,6 @@ GraphFileNameRoot <- as.character(format(Sys.Date(),"%Y-%m-%d"))
 # source("PHS_NASSS_Cardiac_FOI2024_load.R") # Load 2024 FOI data.
 # source("PHS_NASSS_Cardiac_FOI2024_graph.R") # Graph 2024 FOI data.
 source("PHS_NASSS_Cardiac_2024WPD_load.R") # Load 2024 WPD regional data.
+source("PHS_NASSS_Cardiac_2024WPD_graph.R") # Graph 2024 WPD regional data.
 ##########################################################################################
 setwd(RootDirectory)
