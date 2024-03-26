@@ -10,13 +10,13 @@ GraphSubtitle <- "Graph by @bouncingkitten | https://www.drowningindata.blog"
 file.data.all$Report <- as.factor(file.data.all$Report)
 file.data.all$Region <- as.factor(file.data.all$Region)
 
+# Aesthetics and labels for graphs
 Year.colours <- c("2019" = "#1B9E77",
                   "2020" = "#D95F02",
                   "2021" = "#7570B3",
                   "2022" = "#E7298A",
                   "2023" = "#66A61E"
 ) 
-
 trust.labels <- c("EE" = "East of England",
                   "EM" = "East Midlands",
                   "LON" = "London",
@@ -30,7 +30,16 @@ trust.labels <- c("EE" = "East of England",
                   "SW" = "South West",
                   "WM" = "West Midlands",
                   "YH" = "Yorkshire")
+trust.groups <- unique(file.data.all$Region)
+vline.years <- c(as.Date("2021/01/01"),
+                 as.Date("2022/01/01"),
+                 as.Date("2023/01/01"),
+                 as.Date("2024/01/01")
+                 )
 
+df.trust.groups <- rep(trust.groups,length(vline.years))
+df.vline.years <- sort(rep(vline.years,length(trust.groups)))
+df.vline <- data.frame(Date = df.vline.years, Region = df.trust.groups)
 
 FOI2024.graph <- ggplot(data = file.data.all,
                         aes(x = Date,
@@ -59,7 +68,9 @@ FOI2024.graph <- ggplot(data = file.data.all,
   geom_line(show.legend = TRUE,
             size =0.75,
             alpha = 0.75,
-            na.rm = TRUE)
+            na.rm = TRUE)+
+  geom_vline(data = df.vline,
+             aes(xintercept = Date))
 
 ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust.png",sep=""),
        device = png,
@@ -100,7 +111,9 @@ FOI2024.graph.faceted <- ggplot(data = file.data.all,
             na.rm = TRUE)+
   facet_wrap(vars(Region),
              scales = "free_y",
-             labeller = as_labeller(trust.labels))
+             labeller = as_labeller(trust.labels))+
+  geom_vline(data = df.vline,
+             aes(xintercept = Date))
 
 ggsave(FOI2024.graph.faceted,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (faceted).png",sep=""),
        device = png,
