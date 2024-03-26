@@ -19,14 +19,17 @@ Year.colours <- c("2019" = "#1B9E77",
 
 trust.labels <- c("EE" = "East of England",
                   "EM" = "East Midlands",
-                  "L" = "London",
+                  "LON" = "London",
                   "NE" = "North East",
                   "NW" = "North West",
-                  "SC" = "South Central",
-                  "SEC" = "South East Coast",
+                  # There are two regions in the FOI data that aren't in the
+                  # NASSS PDF files.
+                  # "SC" = "South Central",
+                  # "SEC" = "South East Coast",
+                  "SE" = "South East",
                   "SW" = "South West",
                   "WM" = "West Midlands",
-                  "Y" = "Yorkshire")
+                  "YH" = "Yorkshire")
 
 
 FOI2024.graph <- ggplot(data = file.data.all,
@@ -96,7 +99,8 @@ FOI2024.graph.faceted <- ggplot(data = file.data.all,
             alpha = 0.75,
             na.rm = TRUE)+
   facet_wrap(vars(Region),
-             scales = "free_y")
+             scales = "free_y",
+             labeller = as_labeller(trust.labels))
 
 ggsave(FOI2024.graph.faceted,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (faceted).png",sep=""),
        device = png,
