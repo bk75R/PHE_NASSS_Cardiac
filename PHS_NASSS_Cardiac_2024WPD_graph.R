@@ -57,7 +57,7 @@ FOI2024.graph <- ggplot(data = file.data.all,
                      expand = c(0.06,0)
   )+
   geom_line(show.legend = TRUE,
-            size =1.5,
+            size =0.75,
             alpha = 0.75,
             na.rm = TRUE)
 
