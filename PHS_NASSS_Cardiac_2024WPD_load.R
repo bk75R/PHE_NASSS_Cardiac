@@ -25,9 +25,9 @@ file.data.all <- data.frame(A = character(),
 )
 colnames(file.data.all) <- column.names
 
-column.names.normalised <- c("Date","CallsNormalised","Region","Report")
+# column.names.normalised <- c("Date","CallsNormalised","Region","Report")
 file.data.all.scaled <- file.data.all # Data frame for scaled (0-1) dataset
-colnames(file.data.all.scaled) <- column.names.normalised
+# colnames(file.data.all.scaled) <- column.names.normalised
 
 for (Filecounter in 1:length(filenames)) {
   # Set up filename and region and report tags
@@ -48,22 +48,28 @@ for (Filecounter in 1:length(filenames)) {
   colnames(file.data) <- column.names # Change column names
   
   # Calculate normalised data
-  minCalls <- min(file.data$Calls,na.rm = TRUE)
-  maxCalls <- max(file.data$Calls,na.rm = TRUE)
+  # minCalls <- min(file.data$Calls,na.rm = TRUE)
+  # maxCalls <- max(file.data$Calls,na.rm = TRUE)
   
   # Scaled data
-  file.data.scaled <- file.data %>%
-    mutate(Calls = (Calls - minCalls)/(maxCalls - minCalls))
-  colnames(file.data.scaled) <- column.names.normalised
-  
+  # file.data.scaled <- file.data %>%
+  #   mutate(Calls = (Calls - minCalls)/(maxCalls - minCalls))
+  # colnames(file.data.scaled) <- column.names.normalised
+  # 
   # Add current file data to whole data frame
   file.data.all <- rbind.data.frame(file.data.all,file.data)
-  file.data.all.scaled <- rbind.data.frame(file.data.all.scaled,file.data.scaled)
+  # file.data.all.scaled <- rbind.data.frame(file.data.all.scaled,file.data.scaled)
   
 }
 rm(Filecounter,file.current,file.elements,file.report,file.region,Region,Report) # Delete temp loop variables
 file.data.all$Date <- as_date(file.data.all$Date) # Convert date formats
-file.data.all.scaled$Date <- as_date(file.data.all.scaled$Date) # Convert date formats
+# file.data.all.scaled$Date <- as_date(file.data.all.scaled$Date) # Convert date formats
+
+file.data.all.scaled <- file.data.all %>%
+  group_by(Region) %>%
+  mutate(CallsNormalised <- (Calls - min(Calls, na.rm = TRUE))/(max(Calls,na.rm = TRUE) - min(Calls,na.rm = TRUE)))
+colnames(file.data.all.scaled) <- c("Date","Calls","Region","Report","CallsNormalised")
+
 
 ####################
 setwd(RootDirectory)
