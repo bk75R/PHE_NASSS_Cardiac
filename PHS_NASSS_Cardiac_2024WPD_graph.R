@@ -65,12 +65,13 @@ FOI2024.graph <- ggplot(data = file.data.all,
                      # limits = c(0,500),
                      expand = c(0.06,0)
   )+
+  geom_vline(data = df.vline,
+             aes(xintercept = Date),
+             colour = "grey75")+
   geom_line(show.legend = TRUE,
             size =0.75,
             alpha = 0.75,
-            na.rm = TRUE)+
-  geom_vline(data = df.vline,
-             aes(xintercept = Date))
+            na.rm = TRUE)
 
 ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust.png",sep=""),
        device = png,
@@ -105,15 +106,17 @@ FOI2024.graph.faceted <- ggplot(data = file.data.all,
                      # limits = c(0,500),
                      expand = c(0.06,0)
   )+
+  geom_vline(data = df.vline,
+             aes(xintercept = Date),
+             colour = "grey75")+
   geom_line(show.legend = FALSE,
             size =0.5,
             alpha = 0.75,
             na.rm = TRUE)+
   facet_wrap(vars(Region),
              scales = "free_y",
-             labeller = as_labeller(trust.labels))+
-  geom_vline(data = df.vline,
-             aes(xintercept = Date))
+             labeller = as_labeller(trust.labels))
+  
 
 ggsave(FOI2024.graph.faceted,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (faceted).png",sep=""),
        device = png,
