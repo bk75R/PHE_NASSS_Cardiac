@@ -126,6 +126,96 @@ ggsave(FOI2024.graph.faceted,filename = paste(GraphFileNameRoot," NASSS weekly c
        bg = "white"
 )
 
+##################################################################
+##################################################################
+# Graph scaled data to show relative increases for each region   #
+##################################################################
+##################################################################
+
+FOI2024.graph.scaled <- ggplot(data = file.data.all.scaled,
+                        aes(x = Date,
+                            y = CallsNormalised,
+                            colour = Region,
+                            # group = Trust,
+                            #linetype = Type
+                        )
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls (scaled),  ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="right")+
+  scale_x_date(name = "Date")+
+  scale_y_continuous(name = "Weekly calls",
+                     labels = label_comma(accuracy = 1),
+                     # breaks = c(250,300,350,400,450,500),
+                     # limits = c(0,500),
+                     expand = c(0.06,0)
+  )+
+  geom_vline(data = df.vline,
+             aes(xintercept = Date),
+             colour = "grey75")+
+  geom_line(show.legend = TRUE,
+            size =0.75,
+            alpha = 0.75,
+            na.rm = TRUE)
+
+ggsave(FOI2024.graph.scaled,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (scaled).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
+
+
+FOI2024.graph.scaled.faceted <- ggplot(data = file.data.all.scaled,
+                                aes(x = Date,
+                                    y = CallsNormalised,
+                                    colour = Region,
+                                    # group = Trust,
+                                    #linetype = Type
+                                )
+)+
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls (scaled),  ",
+          subtitle = GraphSubtitle)+
+  labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
+  theme_tufte()+
+  theme(text = element_text(family=""),
+        plot.caption = element_text(hjust = 0),
+        panel.background = element_rect(fill = 'white', color = 'white'),
+        plot.background = element_rect(fill = 'white', color = 'white'),
+        legend.position="right")+
+  scale_x_date(name = "Date")+
+  scale_y_continuous(name = "Weekly calls",
+                     labels = label_comma(accuracy = 1),
+                     # breaks = c(250,300,350,400,450,500),
+                     # limits = c(0,500),
+                     expand = c(0.06,0)
+  )+
+  geom_vline(data = df.vline,
+             aes(xintercept = Date),
+             colour = "grey75")+
+  geom_line(show.legend = FALSE,
+            size =0.5,
+            alpha = 0.75,
+            na.rm = TRUE)+
+  facet_wrap(vars(Region),
+             scales = "fixed",
+             labeller = as_labeller(trust.labels))
+
+
+ggsave(FOI2024.graph.scaled.faceted,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (faceted, scaled).png",sep=""),
+       device = png,
+       units = "px",
+       width = 2300,
+       height = 1600,
+       bg = "white"
+)
 
 ####################
 setwd(RootDirectory)
