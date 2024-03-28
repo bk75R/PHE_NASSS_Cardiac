@@ -71,7 +71,8 @@ FOI2024.graph <- ggplot(data = file.data.all,
   geom_line(show.legend = TRUE,
             size =0.75,
             alpha = 0.75,
-            na.rm = TRUE)
+            na.rm = TRUE)+
+  scale_color_discrete(labels = trust.labels)
 
 ggsave(FOI2024.graph,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust.png",sep=""),
        device = png,
@@ -162,7 +163,8 @@ FOI2024.graph.scaled <- ggplot(data = file.data.all.scaled,
   geom_line(show.legend = TRUE,
             size =0.75,
             alpha = 0.75,
-            na.rm = TRUE)
+            na.rm = TRUE)+
+  scale_color_discrete(labels = trust.labels)
 
 ggsave(FOI2024.graph.scaled,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (scaled).png",sep=""),
        device = png,
