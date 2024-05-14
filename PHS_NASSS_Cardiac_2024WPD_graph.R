@@ -1,7 +1,8 @@
 setwd(GraphsDirectory)
 ######################
 
-GraphSubtitle <- "Graph by @bouncingkitten | https://www.drowningindata.blog"
+# GraphSubtitle <- "Graph by @bouncingkitten | https://www.drowningindata.blog"
+GraphSubtitle <- "Health Advisory & Recovery Team | https://www.hartgroup.org"
 
 ################################################################################################
 # Graph FOI data weekly cardiac calls for each trust on same graph                             #
@@ -49,7 +50,7 @@ FOI2024.graph <- ggplot(data = file.data.all,
                             #linetype = Type
                             )
                         )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls,  ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls",
           subtitle = GraphSubtitle)+
   labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
@@ -91,7 +92,7 @@ FOI2024.graph.faceted <- ggplot(data = file.data.all,
                             #linetype = Type
                         )
 )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls,  ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls",
           subtitle = GraphSubtitle)+
   labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
@@ -141,7 +142,7 @@ FOI2024.graph.scaled <- ggplot(data = file.data.all.scaled,
                             #linetype = Type
                         )
 )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls (scaled),  ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls (scaled)",
           subtitle = GraphSubtitle)+
   labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
@@ -183,7 +184,7 @@ FOI2024.graph.scaled.faceted <- ggplot(data = file.data.all.scaled,
                                     #linetype = Type
                                 )
 )+
-  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls (scaled),  ",
+  ggtitle("National Ambulance Syndromic Surveillance System: England\nWeekly Cardiac/respiratory arrest calls (scaled)",
           subtitle = GraphSubtitle)+
   labs(caption = "Graphs source: UK Health Security Agency/Public Health England")+
   theme_tufte()+
