@@ -42,6 +42,27 @@ df.trust.groups <- rep(trust.groups,length(vline.years))
 df.vline.years <- sort(rep(vline.years,length(trust.groups)))
 df.vline <- data.frame(Date = df.vline.years, Region = df.trust.groups)
 
+# Facet labelling function to get consistent labels across all facets
+# Found at https://forum.posit.co/t/control-individual-breaks-labels-facet-grid-ggplot2/120474/2 by nathania
+# https://forum.posit.co/u/nathania/summary
+#
+plot_index <- 0 # Based on: https://coolbutuseless.github.io/2019/03/07/custom-axis-breaks-on-facetted-ggplot/
+label_fun <- function(x) {
+  plot_index <<- plot_index + 1L
+  switch(plot_index,
+         scales::label_comma(accuracy = 1),
+         scales::label_comma(accuracy = 0.1),
+         scales::label_comma(accuracy = 1),
+         scales::label_comma(accuracy = 1),
+         scales::label_comma(accuracy = 1),
+         scales::label_comma(accuracy = 1),
+         scales::label_comma(accuracy = 1),
+         scales::label_comma(accuracy = 1),
+         scales::label_comma(accuracy = 1)
+         )
+  }
+
+# First graph
 FOI2024.graph <- ggplot(data = file.data.all,
                         aes(x = Date,
                             y = Calls,
@@ -61,7 +82,7 @@ FOI2024.graph <- ggplot(data = file.data.all,
         legend.position="right")+
   scale_x_date(name = "Date")+
   scale_y_continuous(name = "Weekly calls",
-                     labels = label_comma(accuracy = 1),
+                     labels = label_comma(accuracy = 0.1),
                      # breaks = c(250,300,350,400,450,500),
                      # limits = c(0,500),
                      expand = c(0.06,0)
@@ -101,9 +122,13 @@ FOI2024.graph.faceted <- ggplot(data = file.data.all,
         panel.background = element_rect(fill = 'white', color = 'white'),
         plot.background = element_rect(fill = 'white', color = 'white'),
         legend.position="right")+
+  facet_wrap(vars(Region),
+             scales = "free_y",
+             labeller = as_labeller(trust.labels))+
   scale_x_date(name = "Date")+
   scale_y_continuous(name = "Weekly calls",
-                     labels = label_comma(accuracy = 1),
+                     labels = label_comma(accuracy = NULL),
+                     #labels = label_fun,
                      # breaks = c(250,300,350,400,450,500),
                      # limits = c(0,500),
                      expand = c(0.06,0)
@@ -114,10 +139,8 @@ FOI2024.graph.faceted <- ggplot(data = file.data.all,
   geom_line(show.legend = FALSE,
             size =0.5,
             alpha = 0.75,
-            na.rm = TRUE)+
-  facet_wrap(vars(Region),
-             scales = "free_y",
-             labeller = as_labeller(trust.labels))
+            na.rm = TRUE)
+  
   
 
 ggsave(FOI2024.graph.faceted,filename = paste(GraphFileNameRoot," NASSS weekly cardiac calls by Trust (faceted).png",sep=""),
@@ -153,7 +176,7 @@ FOI2024.graph.scaled <- ggplot(data = file.data.all.scaled,
         legend.position="right")+
   scale_x_date(name = "Date")+
   scale_y_continuous(name = "Weekly calls",
-                     labels = label_comma(accuracy = 1),
+                     labels = label_comma(accuracy = NULL),
                      # breaks = c(250,300,350,400,450,500),
                      # limits = c(0,500),
                      expand = c(0.06,0)
@@ -195,7 +218,7 @@ FOI2024.graph.scaled.faceted <- ggplot(data = file.data.all.scaled,
         legend.position="right")+
   scale_x_date(name = "Date")+
   scale_y_continuous(name = "Weekly calls",
-                     labels = label_comma(accuracy = 1),
+                     labels = label_comma(accuracy = NULL),
                      # breaks = c(250,300,350,400,450,500),
                      # limits = c(0,500),
                      expand = c(0.06,0)
